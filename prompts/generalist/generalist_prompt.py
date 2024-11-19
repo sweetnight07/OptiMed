@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate
 
-# system prompt that explains the assistant's role
+# system prompt that explains the generalist's role
 GENERALIST_SYSTEM_PROMPT = """
 You are a generalist doctor who has access to patient history. You can make referral recommendations to either a cardiologist or a neurologist when needed.
 
@@ -10,7 +10,7 @@ Your tasks include:
 3. Making a referral recommendation to either a cardiologist or neurologist based on the symptoms and history.
 """
 
-# prompt for the generalist assistant
+# prompt for the generalist 
 GENERALIST_PROMPT = """
 Hello! We have a patient with the patient id {patient_id} with the following symptoms:
 {symptoms}
@@ -22,7 +22,6 @@ Before you give a response, here are some examples to help you understand the ta
 {examples}
 (END OF EXAMPLES)
 """
-
 
 generalist_prompt = PromptTemplate(
     input_variables=["patient_id","symptoms","examples"],

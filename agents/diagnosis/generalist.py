@@ -2,14 +2,14 @@
 import os 
 os.chdir("c:\\Users\\jzou2\\Fall 2024-2025\\Project\\OptiMed")
 
-from agents.agent import OpenAILLMs
+from agents.base_llm import OpenAILLMs
 import data.patient_information as data
 from langchain.agents import Tool
-from prompts.generalist_prompt import generalist_prompt
-from prompts.generalist_example import GENERALIST_EXAMPLE
+from prompts.generalist.generalist_prompt import generalist_prompt
+from prompts.generalist.generalist_example import GENERALIST_EXAMPLE
 
 class GeneralistLLM():
-    def __init__(self, model_name):
+    def __init__(self):
         # collect the tools
         self.tools = [
             Tool(
@@ -27,7 +27,7 @@ class GeneralistLLM():
         # create the prompt for the call
         self.generalist_prompt = generalist_prompt
 
-        self.generalist = OpenAILLMs(self.tools, model_name)
+        self.generalist = OpenAILLMs(self.tools)
 
     # call the llm after it builds the prompt
     def __call__(self, patient_id: str, symptoms: str):

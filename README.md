@@ -1,9 +1,17 @@
-#### Specific Use Case
+### Here Are Some Note Worthy Features
+1. Reasoning Capabilities 
+2. Multi-Agent Conversing and Facilitation (LangGraph)
+3. Search Capabilities 
+4. Vector Similarity Search (FAISS)
+4. Hugging Face Integration (Recommendation System Agent)
+5. Google Calendar Planning (Scheduler Agent)
+
+
+
+### Specific Use Case
 Caridiology and Neurology 
 
-
-
-#### Steps To Implementation
+### Steps To Implementation
 Implementation Steps:
 
 1. Set Up Environment, Import Relevant Packages, Plan MultiAgentSystem Goals and Tools
@@ -13,8 +21,6 @@ Implementation Steps:
 3. Create The Diagnosis Agent
 3a. General Practioner
 3b. Specialist
-
-Key Features: Multiple Agents Conversing and Reflection/Reasoning
 
 4. Create Coordinator Agent (MAS Converse)
 4a. conversation_management: structures the dialogue flow
@@ -31,7 +37,7 @@ Key Features: Multiple Agents Conversing and Reflection/Reasoning
 
 
 
-#### Some Problems You Might Run Into
+### Some Problems You Might Run Into
 - incorrect API key provided: three reasons: invalid key from the source, created api key may take a while to be active, the key is not reflective of the current key from the .env (consider restarting environment)
 
 - parsing error: you can add handle_parsing_errors=True which allows the agent to handle any parsing issues
@@ -52,3 +58,29 @@ Key Features: Multiple Agents Conversing and Reflection/Reasoning
     - AgentExecutor: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html#langchain.agents.agent.AgentExecutor
 
 - Tools
+    - https://python.langchain.com/docs/how_to/custom_tools/
+
+- Graphs 
+    - https://langchain-ai.github.io/langgraph/concepts/low_level/#threads
+
+# thoguht Process 
+
+- create a generic llm for better coding practice (give it the chance to create reasoning or regular agent)
+
+
+- start from the top bottom approach, start from the master node and handling its work flow first
+
+
+If there is uncertainty or they require further collaboration, a Secondary Coordinator Agent might be used to facilitate communication between specialists.
+
+- use a agentstate to keep track of hte state of hte report
+
+
+
+- ideally we add everythign to the prioir ddatabase
+
+- only thing different about each agent is there tools and the agent type 
+
+
+- Incorporates some use of knowledge graphs 
+
