@@ -54,6 +54,8 @@ Implementation Steps:
 
 - DEPRECIATION CRYYY
 
+- HAHHAAHHAHAHAHA HAAHAHAHAH the output cell was empty but if you copy it there was acutal reasoning bruhhhhh
+
 #### Resources
 
 - Initialize Agents: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html#langchain.agents.agent_types.AgentType
