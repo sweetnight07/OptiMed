@@ -14,6 +14,7 @@ from langchain.agents import Tool
 from langgraph.graph import StateGraph, END
 
 from utils.wrapper import enforce_dict_input
+
 class Report(TypedDict):
     """
     Defines the state for the multi-agent workflow
@@ -26,27 +27,22 @@ class Report(TypedDict):
     appointment_details: str
 
 class DiagnosticCoordinator:
-    def __init__(self, report : Report):
+    def __init__(self):
         # get the tools
         self.tools = [
             Tool(
                 name="conclude_diagnosis",
                 func=self.conclude_diagnosis,
-                description="The input must be a dictionary consisting the patient info and messages from the diagnosis team. After the conversation among diagnostics concludes, form a final diagnosis"
+                description="Conclude final diagnosis from team input"
             )
         ]
 
         # create the actual diagnosis coordinator
-        self.diagnostic_coordinator = OpenAILLMs(self.tools, agent_role='Diagnosis Coordinator')
+        self.diagnostic_coordinator = OpenAILLMs(agent_role='Diagnosis Coordinator')
         self.diagnostic_coordinator_prompt = diagnostic_prompt
-        
-        self.report: Report = {
-            'patient_info': report.get('patient_info', ''),
-            'messages': report.get('messages', []),
-            'diagnosis': report.get('diagnosis', ''),
-            'recommendations': report.get('recommendations', ''),
-            'appointment_details': report.get('appointment_details', '')
-        }
+
+        # create a conclusion agent
+        self.conclusion_agent = OpenAILLMs(self.tools, agent_role='Diagnosis Conclusion Agent')
 
         # create the agents 
         self.cardiologist = CardiologistLLM()
@@ -54,23 +50,55 @@ class DiagnosticCoordinator:
         self.neurologist = NeurologistLLM()
         
     def diagnostic_node(self, report: Report):
-        """Coordinate and delegate the workflow of the diagnostic team"""
-        print("in diagnostic node")
+        """Initial diagnostic coordination node"""
         diagnostic_prompt = self.build_diagnostic_prompt(report, DIAGNOSTIC_EXAMPLE)
         diagnostic_message = self.diagnostic_coordinator(diagnostic_prompt)
-
+        
+        # Update the report with coordinator's initial assessment
+        updated_messages = report["messages"] + [
+            {"role": "diagnostic coordinator", "content": diagnostic_message}
+        ]
+        
         return {
-            "messages": [{"role": "diagnostic coordinator", "content": diagnostic_message}],
-            "diagnosis": ""  # Placeholder for final diagnosis
+            "messages": updated_messages,
+            "patient_info": report["patient_info"],
+            "diagnosis": "",
+            "recommendations": "",
+            "appointment_details": ""
         }
     
+    # create the conclusion agent 
+    def conclusion_node(self, report: Report):
+        """Handles actual task completion using tools"""
+        # Filter for specialist messages
+        specialist_messages = [
+            msg for msg in report["messages"] 
+            if msg["role"] in ["generalist", "cardiologist", "neurologist"]
+        ]
+        
+        # Use conclusion agent with tools to generate final diagnosis
+        conclusion = self.conclusion_agent(
+            f"Review all specialist assessments and conclude final diagnosis:\n" +
+            "\n".join([f"{msg['role']}: {msg['content']}" for msg in specialist_messages])
+        )
+        
     def generalist_node(self, report: Report):
         """Generalist consultation node"""
         generalist_input = self.generalist(
             f"Provide general assessment based on: {report['patient_info']}"
         )
+        
+        # Append generalist's assessment to messages
+        updated_messages = report["messages"] + [
+            {"role": "generalist", "content": generalist_input}
+        ]
+        
         return {
-            "messages": [{"role": "generalist", "content": generalist_input}]
+            "messages": updated_messages,
+            "patient_info": report["patient_info"],
+            "diagnosis": report["diagnosis"],
+            "recommendations": report["recommendations"],
+            "appointment_details": report["appointment_details"]
         }
     
     def cardiologist_node(self, report: Report):
@@ -111,33 +139,13 @@ class DiagnosticCoordinator:
         return workflow.compile()
     
 
-    def __call__(self):
+    def __call__(self, prompt):
         # Now we initialize the workflow
         workflow = self.build_diagnostic_workflow()
+        
+        workflow.invoke(prompt)
 
-        # Ensure the report is in the correct format
-        print(f"Report Type: {type(self.report)}")
-
-        # Extract the necessary fields to pass into the workflow
-        report_input = {
-            "patient_info": self.report.get('patient_info', ''),
-            "messages": self.report.get('messages', []),
-            "diagnosis": self.report.get('diagnosis', ''),
-            "recommendations": self.report.get('recommendations', ''),
-            "appointment_details": self.report.get('appointment_details', ''),
-        }
-
-        # Print the report input to debug the content
-        print(f"Report input passed to workflow: {report_input}")
-
-        # Invoke the workflow with the prepared input
-        try:
-            result = workflow.invoke(report_input)
-            return result
-        except Exception as e:
-            print(f"Error invoking workflow: {e}")
-            return None
-
+        return {"messages": [{"role": "main coordinator", "content": master_message}]}
 
 
     # format the prompt

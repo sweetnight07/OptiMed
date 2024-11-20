@@ -52,6 +52,8 @@ Implementation Steps:
 
 - user_input: the master agent had access to the user_input tool but in this case it is too complicated 
 
+- DEPRECIATION CRYYY
+
 #### Resources
 
 - Initialize Agents: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html#langchain.agents.agent_types.AgentType

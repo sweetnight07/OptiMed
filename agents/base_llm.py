@@ -1,77 +1,78 @@
-# import relevant packages 
+# import relevant packages
 import os
-from typing import List, Optional, Callable
+from typing import List, Optional
 from dotenv import load_dotenv
 
-# import LangChain packages 
-from langchain.chat_models import ChatOpenAI
-from langchain.agents import Tool, initialize_agent, AgentType
-from langchain.schema import SystemMessage
+# import LangChain packages
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langchain.agents import Tool, create_react_agent, AgentExecutor
 
-# class for OpenAILLMs
+from prompts.all_system_message import DEFAULT_SYSTEM_MESSAGE
+from prompts.all_template import TEMPLATE
+
 class OpenAILLMs:
     def __init__(self, 
-                 tools: Optional[List[Tool]]=None, 
-                 model_name: str ='gpt-4o-mini', 
-                 agent_type: str ='ZERO_SHOT_REACT_DESCRIPTION', 
-                 system_prompt: Optional[str]=None,
+                 tools: Optional[List[Tool]] = None, 
+                 model_name: str = 'gpt-4o-mini', 
+                 system_prompt: Optional[str] = None,
                  temperature: float = 0.3,
-                 max_tokens: Optional[int] = None,
-                 agent_role: str ='Unspecified Agent'):
-        
-        # extract the api key (in __init__()) to ensure it is updated when changed
+                 agent_role: str = 'Default Agent'):
+
+        # Load environment variables
         load_dotenv()
         self.openai_key = os.getenv('OPENAI_API_KEY')
 
-        # check if the key was loaded successfully
-        if self.openai_key:
-            print("openAI API Key loaded successfully.")
-        else:
-            print("failed to load OpenAI API Key.")
+        if not self.openai_key:
+            raise ValueError("OpenAI API Key not found in environment variables")
 
-        # initialize llm
-        self.llm = ChatOpenAI(api_key = self.openai_key, 
-                              model=model_name, 
-                              temperature=temperature,
-                              max_tokens=max_tokens,)
+        # Initialize LLM
+        self.llm = ChatOpenAI(
+            api_key=self.openai_key,
+            model=model_name,
+            temperature=temperature
+        )
 
-        # intialize tools, system prompts, agent role
+        # Initialize tools and prompts
         self.tools = tools or [self._create_default_tool()]
-        self.system_prompt = system_prompt or "You are a helpful assistant."
+        self.system_prompt = system_prompt or DEFAULT_SYSTEM_MESSAGE
         self.agent_role = agent_role
 
-        try: 
-            # intialize the agent
-            self.agent = initialize_agent(
-                tools=self.tools,
-                llm=self.llm,   
-                agent_type=agent_type,
-                verbose=True,
-                handle_parsing_errors=True,
-                max_iterations= 10 # each agent can only talk twice 
-            )
-        except Exception as e:
-            print(f"error in initializing agent:", {e})
-            self.agent = None
+        # Set up the ChatPromptTemplate with the TEMPLATE
+        prompt_template = ChatPromptTemplate.from_template(TEMPLATE)
 
-    # invokes the llm
+        # Create the agent
+        self.agent = create_react_agent(
+            tools=self.tools,
+            llm=self.llm,
+            prompt=prompt_template
+        )
+
+        # Create the agent executor
+        self.agent_executor = AgentExecutor(
+            agent=self.agent,
+            tools=self.tools,
+            verbose=True
+        )
+
     def __call__(self, prompt: str):
-        """"""
-        messages = [
-            SystemMessage(content=self.system_prompt),  
-            {"role": "user", "content": prompt} 
-        ]
-        result = self.agent(messages)
+        """
+        Invoke the LLM with the user prompt.
+        """
+        # Use the agent executor to process the input
+        result = self.agent_executor.invoke({"input": prompt})
         return self.agent_role, result["output"]
     
-    # create a generic default tool
     def _create_default_tool(self) -> Tool:
-        """Create a more sophisticated default tool"""
+        """Create a tool for generic responses."""
+
         def default_tool_func(input_str: str) -> str:
-            return f"Processed generic input: {input_str}"
+            return f"Response: {input_str}"
         
         return Tool(
-            name="DefaultTool",
+            name="respond_tool",
             func=default_tool_func,
-            description="A generic tool for processing inputs when no specific tools are provided"
+            description="A tool to respond to general queries or statements."
         )
+
+
