@@ -1,0 +1,3 @@
+DIAGNOSTIC_EXAMPLE = """
+
+"""

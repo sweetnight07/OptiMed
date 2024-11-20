@@ -26,7 +26,7 @@ class CardiologistLLM():
         # create the prompt for the call
         self.generalist_prompt = generalist_prompt
 
-        self.generalist = OpenAILLMs(self.tools)
+        self.generalist = OpenAILLMs(self.tools, agent_role='Cardiologist')
 
     # call the llm after it builds the prompt
     def __call__(self, patient_id: str, symptoms: str):

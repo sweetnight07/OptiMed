@@ -26,7 +26,7 @@ class NeurologistLLM():
         # create the prompt for the call
         self.generalist_prompt = generalist_prompt
 
-        self.generalist = OpenAILLMs(self.tools)
+        self.generalist = OpenAILLMs(self.tools, agent_role='Neurologist')
 
     # call the llm after it builds the prompt
     def __call__(self, patient_id: str, symptoms: str):
@@ -40,7 +40,6 @@ class NeurologistLLM():
                             symptoms = symptoms, 
                             examples = examples)
     
-
     # create the tools
     def access_patient_history(self, patient_id) -> str:
         """Access patient history from the mock database."""

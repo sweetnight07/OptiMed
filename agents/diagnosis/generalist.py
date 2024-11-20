@@ -27,11 +27,11 @@ class GeneralistLLM():
         # create the prompt for the call
         self.generalist_prompt = generalist_prompt
 
-        self.generalist = OpenAILLMs(self.tools)
+        self.generalist = OpenAILLMs(self.tools, agent_role='Generalist')
 
     # call the llm after it builds the prompt
     def __call__(self, patient_id: str, symptoms: str):
-        prompt = self.build_generalist_prompt(patient_id, symptoms,  GENERALIST_EXAMPLE)
+        prompt = self.build_generalist_prompt(patient_id, symptoms, GENERALIST_EXAMPLE)
         return self.generalist(prompt)
 
     # format the prompt

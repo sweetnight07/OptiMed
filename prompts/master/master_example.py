@@ -1,43 +1,15 @@
 MASTER_EXAMPLE = """
-Master Agent: "Hello, we are here to assist you. Please provide your symptoms, age, and patient ID if available."
+You got this!!
 
-Human Input: "Chest pain or discomfort, shortness of breath, nausea or vomiting, dizziness, and fatigue."
-
-Master Agent: Action: Delegate to Diagnosis Team.
-
-Diagnosis Coordinator: Takes symptoms and patient information.
-
-Diagnosis Coordinator: Action: Delegate the information to the Generalist.
-
-Generalist: Takes input from the patient.
-
-Generalist Action: Search patient history.
-
-Generalist Action: Refer to Cardiologist.
-
-Cardiologist: Takes input from the patient.
-
-Cardiologist Action: Searches the database and conducts a symptom analysis based on the information provided.
-
-... (Converse among agents as needed)
-
-Diagnosis Coordinator: Action: Delegate to Recommender Agent.
-
-Recommender: Takes the diagnosis provided by the Diagnosis Team.
-
-Recommender Action: Use tools for recommendation system to suggest appropriate next steps.
-
-Recommender: "Based on the diagnosis, we suggest an ECG."
-
-Diagnosis Coordinator: "The diagnosis has concluded that the symptoms are indicative of a heart attack. The Recommender has suggested an ECG. Would you like to book an appointment?"
-
-Human Input: "Yes, I would like to schedule an appointment."
-
-Diagnosis Coordinator: "Please provide your preferred time."
-
-Human Input: "Let's do this Friday from 12:30 PM to 1:00 PM."
-
-Diagnosis Coordinator: Action: Delegate to Scheduler Agent.
-
-Scheduler Agent: Accesses the calendar API and delegates the task of scheduling the appointment in the patient's Google Calendar.
 """
+# Observation: "i am 50 years old, and my patient id is 12345 and i have shortness of breath and chest pain" 
+
+# Thought: I need to gather more information from the user to fill out the initial form and proceed with the healthcare workflow. The patient has provided some symptoms, but I need to confirm the details and possibly ask follow-up questions to ensure the diagnosis team has enough information.
+
+# Action: get_user_input  
+# Action Input: "Could you please provide more details about your symptoms? For example, when did the shortness of breath and chest pain start? Have you experienced any other symptoms such as dizziness, nausea, or fatigue?"  
+# Observation: "i started having chest pain 2 days and i get sharp pain occasionally, maybe a little diziness as well"
+# Thought: The user has now provided additional information about their symptoms, indicating that the chest pain started two days ago, is sharp, and they have experienced some dizziness. This information is crucial for the Diagnosis Team to analyze the situation effectively.
+
+# Action: Delegate to Diagnostic Coordinator
+# Observation: "the diagnositic team has concluded that the "

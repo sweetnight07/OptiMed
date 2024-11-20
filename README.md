@@ -42,12 +42,15 @@ Implementation Steps:
 
 - parsing error: you can add handle_parsing_errors=True which allows the agent to handle any parsing issues
 
--  the jupyter notebook test might not be updated due to failed cache, consider restarting the kernel
+- the jupyter notebook test might not be updated due to failed cache, consider restarting the kernel
 
 - tool does not support sync invocation : ensure that each tool returns a callable function rather than a None or String for synced invocation
 
-- 
+- invalid reducer signature for StateGraph: ensure that the State is in the appropiate type
 
+- self.report is not actually the report dict type itself, but an instance so make sure to re initialized when passed in 
+
+- user_input: the master agent had access to the user_input tool but in this case it is too complicated 
 
 #### Resources
 
@@ -63,7 +66,7 @@ Implementation Steps:
 - Graphs 
     - https://langchain-ai.github.io/langgraph/concepts/low_level/#threads
 
-# thoguht Process 
+# Thoguht Process 
 
 - create a generic llm for better coding practice (give it the chance to create reasoning or regular agent)
 

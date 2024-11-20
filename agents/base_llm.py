@@ -16,7 +16,8 @@ class OpenAILLMs:
                  agent_type: str ='ZERO_SHOT_REACT_DESCRIPTION', 
                  system_prompt: Optional[str]=None,
                  temperature: float = 0.3,
-                 max_tokens: Optional[int] = None):
+                 max_tokens: Optional[int] = None,
+                 agent_role: str ='Unspecified Agent'):
         
         # extract the api key (in __init__()) to ensure it is updated when changed
         load_dotenv()
@@ -32,21 +33,22 @@ class OpenAILLMs:
         self.llm = ChatOpenAI(api_key = self.openai_key, 
                               model=model_name, 
                               temperature=temperature,
-                              max_tokens=max_tokens)
+                              max_tokens=max_tokens,)
 
-        # intialize tools and system prompts
+        # intialize tools, system prompts, agent role
         self.tools = tools or [self._create_default_tool()]
         self.system_prompt = system_prompt or "You are a helpful assistant."
+        self.agent_role = agent_role
 
         try: 
             # intialize the agent
             self.agent = initialize_agent(
                 tools=self.tools,
-                llm=self.llm,
+                llm=self.llm,   
                 agent_type=agent_type,
                 verbose=True,
                 handle_parsing_errors=True,
-                max_iterations=3 # use to prevent infinite loop?
+                max_iterations= 10 # each agent can only talk twice 
             )
         except Exception as e:
             print(f"error in initializing agent:", {e})
@@ -60,7 +62,7 @@ class OpenAILLMs:
             {"role": "user", "content": prompt} 
         ]
         result = self.agent(messages)
-        return result["output"]
+        return self.agent_role, result["output"]
     
     # create a generic default tool
     def _create_default_tool(self) -> Tool:
@@ -69,7 +71,7 @@ class OpenAILLMs:
             return f"Processed generic input: {input_str}"
         
         return Tool(
-            name="DefaultGenericTool",
+            name="DefaultTool",
             func=default_tool_func,
             description="A generic tool for processing inputs when no specific tools are provided"
         )
