@@ -6,19 +6,15 @@ from operator import add
 import uuid
 
 from agents.base_llm import OpenAILLMs
-from agents.user_interaction.user_inputter import UserLLM
+from agents.user import UserLLM
 
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import StateGraph, END
 
-
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.messages import SystemMessage
-
-from agents.diagnosis.diagnosis_coordinator import DiagnosticCoordinator
-from agents.recommendation.recommender import RecommendationLLM
-from agents.schedule.scheduler import SchedulerLLM
+# from agents.diagnosis import DiagnosisLLM
+# from agents.recommender import RecommendationLLM
+# from agents.scheduler import SchedulerLLM
 
 from prompts.all_system_message import MASTER_SYSTEM_PROMPT
 from prompts.all_template import MASTER_TEMPLATE
@@ -54,21 +50,23 @@ class MasterWorkflow:
 
         # initialize llm agents
         self.master = OpenAILLMs(system_prompt=MASTER_SYSTEM_PROMPT, agent_role="Main Orchestrator")
-        self.user_inputter = UserLLM()
+        self.user_agent = UserLLM()
+        # self.diagnosis_agent = DiagnosisLLM()
 
         # build the workflow
         self.build_workflow()
 
     # testing purposes        
-    def test_call(self):
+    def test_call(self, report: Report):
         # Construct the full input by combining the master template, current report, and prompt
         full_input = f"""{MASTER_TEMPLATE}
 
 Current Report:
-{str(self.current_report)}
+{str(report)}
 (END OF FORM)
 
 """
+        print(full_input)
         master_response = self.master(full_input)
         return master_response
     
@@ -80,6 +78,7 @@ Here Is The Current Report:
 {str(report)}
 (END OF FORM)
 """
+        print(report)
         # Add a message from the master
         report['messages'].append({
             "role": "master", 
@@ -93,7 +92,7 @@ Here Is The Current Report:
     # only have access to the patent 
     def user_node(self, report: Report):
         # gets the summary 
-        user_input = self.user_inputter() # has a template filled should pass in the report laters 
+        user_input = self.user_agent() # has a template filled should pass in the report laters 
         
         # the summary is now the patient info hypothetically 
         report['patient_input'] = user_input
@@ -105,10 +104,9 @@ Here Is The Current Report:
 
         return report
     
-    def diagnosis_node(self, report: Report)
+    def diagnosis_node(self, report: Report):
+        return None
         
-
-
     def build_workflow(self):
         """ Construct the workflow using"""
         workflow = StateGraph(Report)

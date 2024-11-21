@@ -24,12 +24,12 @@ Thought:{agent_scratchpad}
 MASTER_TEMPLATE = """
 Please delegate the agents needed to fill out the form below:
 
-Here are the agent names:
+Here are the agents names:
 
-- USER INTERACTION: Responsible for filling out the patient input.
-- DIAGNOSIS: Responsible for filling out the diagnosis.
-- RECOMMENDATION: Responsible for filling out the recommendation.
-- SCHEDULER: Responsible for filling out the appointment details.
+- USER INTERACTION: Responsible for filling out the **patient_input** field.
+- DIAGNOSIS: Responsible for filling out the **diagnosis** field.
+- RECOMMENDATION: Responsible for filling out the **recommendations** field.
+- SCHEDULER: Responsible for filling out the **appointment_details** field.
 
 (END OF AGENT LIST)
 
@@ -41,6 +41,7 @@ Final Answer: The final answer should be the agent name.
 
 Begin!
 """
+
 
 USER_TEMPLATE = """
 You have access to the following tools:
@@ -59,6 +60,17 @@ Observation: Document the result of the action or information provided by the us
 
 Thought: Conclude that you now have sufficient information.
 Final Answer: Provide a concise summary of the user's information based on the details gathered.
+
+Begin!
+"""
+
+DIAGNOSIS_TEMPLATE = """
+Your goal is to provide a diagnosis given the info of the patient.
+
+Use the following format:
+Thought and Reasoning: Before making a diagnosis make sure you reason what it is that you want to diagnosis, if you cannot provide a accurate diagnosis please say "Up To Recommender"
+Action: complete your diagnosis
+Final Answer: The final answer should be a short diagnosis 
 
 Begin!
 """

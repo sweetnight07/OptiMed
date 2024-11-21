@@ -59,6 +59,12 @@ Implementation Steps:
 
 
 #### PROBELMS FOR THE SAKE OF SIMPLICITY WE WILL NOT IMPLEMENT A DIAGNOSIS TEAM
+
+CODE TOP BUT PROMPT ENGINEER BOTTOM UP
+
+
+
+
 - IT is chronolgoical system but finetung laters 
 
 
