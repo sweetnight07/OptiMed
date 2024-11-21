@@ -31,6 +31,7 @@ Here are the agents names:
 - RECOMMENDATION: Responsible for filling out the **recommendations** field.
 - SCHEDULER: Responsible for filling out the **appointment_details** field.
 
+For example if the diagnosis and patient info are filled then we delegate to the recommendation
 (END OF AGENT LIST)
 
 Use the following format:

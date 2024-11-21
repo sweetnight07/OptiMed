@@ -7,6 +7,7 @@ import uuid
 
 from agents.base_llm import OpenAILLMs
 from agents.user import UserLLM
+from agents.diagnosis import DiagnosisLLM
 
 
 from langgraph.checkpoint.memory import MemorySaver
@@ -51,41 +52,29 @@ class MasterWorkflow:
         # initialize llm agents
         self.master = OpenAILLMs(system_prompt=MASTER_SYSTEM_PROMPT, agent_role="Main Orchestrator")
         self.user_agent = UserLLM()
-        # self.diagnosis_agent = DiagnosisLLM()
+        self.diagnosis_agent = DiagnosisLLM()
 
         # build the workflow
         self.build_workflow()
-
-    # testing purposes        
-    def test_call(self, report: Report):
-        # Construct the full input by combining the master template, current report, and prompt
-        full_input = f"""{MASTER_TEMPLATE}
-
-Current Report:
-{str(report)}
-(END OF FORM)
-
-"""
-        print(full_input)
-        master_response = self.master(full_input)
-        return master_response
     
     # this node is the entry so it is invoked there   
     def master_node(self, report: Report):
         # Construct the full input by combining the master template, current report, and prompt
-        full_input = f"""{MASTER_TEMPLATE}
+        master_input = f"""{MASTER_TEMPLATE}
 Here Is The Current Report:
 {str(report)}
 (END OF FORM)
 """
         print(report)
         # Add a message from the master
+
+        output = self.master(master_input)
+
+        # routing purposes 
         report['messages'].append({
             "role": "master", 
-            "content": "Analyzing patient information"
+            "content": output
         })
-
-        self.master(full_input)
         # return the thingy
         return report
         
@@ -105,46 +94,90 @@ Here Is The Current Report:
         return report
     
     def diagnosis_node(self, report: Report):
-        return None
+        diagnosis_output = self.diagnosis_agent(report) # need
+
+        report['diagnosis'] = diagnosis_output
+
+        report['messages'].append({
+            "role": "diagnosis", 
+            "content": diagnosis_output
+        })
+
+        return report
         
     def build_workflow(self):
         """ Construct the workflow using"""
         workflow = StateGraph(Report)
 
         workflow.add_node("master", self.master_node)
-        workflow.add_node("user", self.user_node)
+        workflow.add_node("user node", self.user_node)
+        workflow.add_node("diagnosis node", self.diagnosis_node)
 
         workflow.set_entry_point("master")
 
+        # Routing logic
+        def route_master(report: Report):
+            """Determine the next node based on master's output"""
+            last_master_message = report['messages'][-1]['content'] if report['messages'] else ""
+            
+            if "USER INTERACTION" in last_master_message.upper():
+                return "user node"
+            elif "DIAGNOSIS" in last_master_message.upper():
+                return "diagnosis node"
+            else:
+                return "master"  # Stay in master node if no clear routing
+
+        # Add conditional edges
+        workflow.add_conditional_edges(
+            "master",
+            route_master
+        )
         # bidirectional information will go to users 
-        workflow.add_edge("master", "user")
-        workflow.add_edge("user", "master")
-
-        checkpointer = MemorySaver()
-
-        # # routing logic
-        # def route_master(report: Report):
-        #     """Determine the next node"""
-        #     last_master_message = report['messages'][-1]['content'] if report['message'] else ""
-
-        #     if "user" in last_master_message.lower():
-        #         return "user"
-        
-        # # add the conditional edges
-        # workflow.add_conditional_edges(
-        #     "master",
-        #     route_master
-        # )
+        workflow.add_edge("user node", "master")
+        workflow.add_edge("diagnosis node", "master")
 
         checkpointer = MemorySaver()
 
         self.app = workflow.compile(checkpointer=checkpointer)
 
-    def run(self, max_iterations = 5):
+    def run(self):
         """
         Run the workflow with a maximum number of iterations
         """
         report = self.initial_report.copy()
+        # update report
+
+        # has config
+        config = {
+            "configurable": {
+                "thread_id": self.thread_id
+            }
+        }
+        
+        result = self.app.invoke(report, config=config)
+
+        report = result
+        return report
+    
+    # for testing purpose
+        # testing purposes        
+    def test_call(self, report: Report):
+        # Construct the full input by combining the master template, current report, and prompt
+        full_input = f"""{MASTER_TEMPLATE}
+
+Current Report:
+{str(report)}
+(END OF FORM)
+
+"""
+        print(full_input)
+        master_response = self.master(full_input)
+        return master_response
+
+    def test_run(self, report: Report):
+        """
+        Run the workflow with a maximum number of iterations
+        """
         # update report
 
         # has config
