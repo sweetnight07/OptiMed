@@ -112,3 +112,12 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 - Incorporates some use of knowledge graphs 
 
+#### <u>Further Implementation</u>
+
+##### Glad you could make it to the end! Here are some future implementation I am thinking of, so be sure to stick around!
+    - Subgraph In Diagnosis: Extend The Diagnosis Agent To Be A Sub Graph With Many Specialist Agent
+    - Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered
+    -  
+
+
+

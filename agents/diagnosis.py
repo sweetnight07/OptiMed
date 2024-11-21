@@ -1,5 +1,9 @@
 import os 
-os.chdir("c:\\Users\\jzou2\\Fall 2024-2025\\Project\\OptiMed")
+
+# go to workspace directory
+from dotenv import load_dotenv
+load_dotenv()
+os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 
 from agents.base_llm import OpenAILLMs
 
@@ -15,17 +19,22 @@ John Doe, a 45-year-old male, reports experiencing persistent chest pain, shortn
 
 class DiagnosisLLM():
     def __init__(self):
-        # get users 
-        # self.diagnostic_tools = [
-        #     Tool(
-        #         name="get_user_input",
-        #         func=self.get_user_input,
-        #         description="Prompts the user for input and returns their response."
-        #     )
-        # ]
+        # set up diagnosis tools 
+        self.diagnostic_tools = [
+            Tool(
+                name="search online",
+                func=self.search_online,
+                description="Prompts the user for input and returns their response."
+            ),
+            Tool(
+                name="view database "
+            )
+        ]
 
         self.diagnosis = OpenAILLMs(system_prompt=DIAGNOSIS_SYSTEM_PROMPT, template=DIAGNOSIS_TEMPLATE, agent_role="Diagnosis Agent")
 
+    def search_online(self, query):
+        return
 
     # call the llm after it builds the prompt
     def __call__(self, report):

@@ -1,6 +1,11 @@
 # initial set up and imports
 import os 
-os.chdir("c:\\Users\\jzou2\\Fall 2024-2025\\Project\\OptiMed")
+
+# go to workspace directory
+from dotenv import load_dotenv
+load_dotenv()
+os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
+
 from typing import TypedDict, List, Annotated
 from operator import add
 import uuid

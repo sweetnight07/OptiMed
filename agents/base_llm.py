@@ -1,7 +1,12 @@
 # import relevant packages
 import os
 from typing import List, Optional
+
+# go to workspace directory
 from dotenv import load_dotenv
+load_dotenv()
+os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
+
 
 # import LangChain packages
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
@@ -22,8 +27,7 @@ class OpenAILLMs:
                  agent_role: str = 'Default Agent',
                  max_iterations = 4):
 
-        # Load environment variables
-        load_dotenv()
+        # get the key
         self.openai_key = os.getenv('OPENAI_API_KEY')
 
         if not self.openai_key:
