@@ -24,20 +24,20 @@ Thought:{agent_scratchpad}
 MASTER_TEMPLATE = """
 Please delegate the agents needed to fill out the form below:
 
-Here are the agents names:
+Here are the agent names:
 
-- USER INTERACTION
-- DIAGNOSIS AGENT
-- RECOMMEDATION
-- SCHEDULER
+- USER INTERACTION: Responsible for filling out the patient input.
+- DIAGNOSIS: Responsible for filling out the diagnosis.
+- RECOMMENDATION: Responsible for filling out the recommendation.
+- SCHEDULER: Responsible for filling out the appointment details.
 
 (END OF AGENT LIST)
 
 Use the following format:
 
-Thought and Reasoning: you should always think about what agent to delegate the form to complete the form
+Thought and Reasoning: Think about which agent should complete the form based on the task.
 Action: [agent_name]
-Final Answer: the final answer should be the agent name 
+Final Answer: The final answer should be the agent name.
 
 Begin!
 """

@@ -48,8 +48,6 @@ class OpenAILLMs:
             ("human", self.template)
         ])
 
-        print(self.prompt)
-        
         # Create the agent
         self.agent = create_react_agent(
             tools=self.tools,
@@ -78,7 +76,7 @@ class OpenAILLMs:
 
         # Use the agent executor to process the input
         result = self.agent_executor.invoke(input_dict)
-        return self.agent_role, result["output"]
+        return result["output"]
     
     def _create_default_tool(self) -> Tool:
         """Create a tool for generic responses."""
