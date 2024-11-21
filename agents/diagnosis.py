@@ -24,20 +24,12 @@ class DiagnosisLLM():
         #     )
         # ]
 
-        self.diagnosis = OpenAILLMs(system_prompt=DIAGNOSIS_SYSTEM_PROMPT, agent_role="Diagnosis Agent")
+        self.diagnosis = OpenAILLMs(system_prompt=DIAGNOSIS_SYSTEM_PROMPT, template=DIAGNOSIS_TEMPLATE, agent_role="Diagnosis Agent")
 
 
     # call the llm after it builds the prompt
     def __call__(self, report):
-       
-       full_input = f"""{DIAGNOSIS_TEMPLATE}
-
-Current Report:
-{str(report)}
-(END OF FORM)
-"""
-       
-       return self.diagnosis(full_input)
+       return self.diagnosis(report)
     
 
 

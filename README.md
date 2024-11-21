@@ -108,6 +108,7 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 - only thing different about each agent is there tools and the agent type 
 
+- CONTAINERIZATION
 
 - Incorporates some use of knowledge graphs 
 

@@ -24,6 +24,10 @@ Thought:{agent_scratchpad}
 MASTER_TEMPLATE = """
 Please delegate the agents needed to fill out the form below:
 
+You do not have any tools:
+
+{tools} or {tool_names}
+
 Here are the agents names:
 
 - USER INTERACTION: Responsible for filling out the **patient_input** field.
@@ -42,11 +46,13 @@ Final Answer: The final answer should be the agent name.
 
 Begin!
 
-HERE IS THE CURRENT FORM:
+Here is the current form:
 
 {input}
 
 (END OF FORM)
+
+Thought: {agent_scratchpad}
 """
 
 
@@ -69,17 +75,36 @@ Thought: Conclude that you now have sufficient information.
 Final Answer: Provide a concise summary of the user's information based on the details gathered.
 
 Begin!
+{input}
+{agent_scratchpad}
 """
 
 DIAGNOSIS_TEMPLATE = """
 Your goal is to provide a diagnosis given the info of the patient.
 
+You have access to the following tools:
+
+{tools}
+
 Use the following format:
-Thought and Reasoning: Before making a diagnosis make sure you reason what it is that you want to diagnosis, if you cannot provide a accurate diagnosis please say "Up To Recommender"
-Action: complete your diagnosis
-Final Answer: The final answer should be a short diagnosis 
+
+Thought and Reasoning: From reading the patient info, if you can make a diagnose then please feel free to do, if the diagnosis is unclear then state 'Unknown'
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought and Reasoning/Action/Action Input/Observation can repeat 3 times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
 
 Begin!
+
+Here is the current form:
+
+{input}
+
+(END OF FORM)
+
+Thought: {agent_scratchpad}
 """
 
 

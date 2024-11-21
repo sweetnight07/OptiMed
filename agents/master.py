@@ -50,7 +50,7 @@ class MasterWorkflow:
         self.current_report = self.initial_report.copy()
 
         # initialize llm agents
-        self.master = OpenAILLMs(system_prompt=MASTER_SYSTEM_PROMPT, agent_role="Main Orchestrator")
+        self.master = OpenAILLMs(system_prompt=MASTER_SYSTEM_PROMPT, template=MASTER_TEMPLATE, agent_role="Main Orchestrator")
         self.user_agent = UserLLM()
         self.diagnosis_agent = DiagnosisLLM()
 
@@ -60,14 +60,9 @@ class MasterWorkflow:
     # this node is the entry so it is invoked there   
     def master_node(self, report: Report):
         # Construct the full input by combining the master template, current report, and prompt
-        master_input = f"""{MASTER_TEMPLATE}
-Here Is The Current Report:
-{str(report)}
-(END OF FORM)
-"""
         # Add a message from the master
 
-        output = self.master(master_input)
+        output = self.master(report)
 
         # routing purposes 
         report['messages'].append({
@@ -80,7 +75,7 @@ Here Is The Current Report:
     # only have access to the patent 
     def user_node(self, report: Report):
         # gets the summary 
-        user_input = self.user_agent() # has a template filled should pass in the report laters 
+        user_input = self.user_agent(report) # has a template filled should pass in the report laters 
         
         # the summary is now the patient info hypothetically 
         report['patient_input'] = user_input
@@ -110,7 +105,7 @@ Here Is The Current Report:
 
         workflow.add_node("master", self.master_node)
         workflow.add_node("user node", self.user_node)
-        workflow.add_node("diagnosis node", self.diagnosis_node)
+        # workflow.add_node("diagnosis node", self.diagnosis_node)
 
         workflow.set_entry_point("master")
 
@@ -145,8 +140,6 @@ Here Is The Current Report:
         Run the workflow with a maximum number of iterations
         """
         report = self.initial_report.copy()
-        # update report
-
         # has config
         config = {
             "configurable": {
@@ -163,15 +156,8 @@ Here Is The Current Report:
         # testing purposes        
     def test_call(self, report: Report):
         # Construct the full input by combining the master template, current report, and prompt
-        full_input = f"""{MASTER_TEMPLATE}
 
-Current Report:
-{str(report)}
-(END OF FORM)
-
-"""
-        # there is a template, but not the 
-        master_response = self.master(full_input)
+        master_response = self.master(str(report))
         return master_response
 
     def test_run(self, report: Report):

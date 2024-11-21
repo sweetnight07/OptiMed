@@ -19,7 +19,8 @@ class OpenAILLMs:
                  system_prompt: Optional[str] = None,
                  template: Optional[str] = None,
                  temperature: float = 0.3,
-                 agent_role: str = 'Default Agent'):
+                 agent_role: str = 'Default Agent',
+                 max_iterations = 4):
 
         # Load environment variables
         load_dotenv()
@@ -38,6 +39,7 @@ class OpenAILLMs:
         # Initialize tools and prompts
         self.tools = tools or [self._create_default_tool()]
         self.system_prompt = system_prompt or DEFAULT_SYSTEM_MESSAGE
+        self.max_iterations = max_iterations
         # template
         self.template = template or TEMPLATE
         self.agent_role = agent_role
@@ -73,30 +75,17 @@ class OpenAILLMs:
             agent=self.agent,
             tools=self.tools,
             verbose=True,
-            handle_parsing_errors=True
+            handle_parsing_errors=True,
+            max_iterations=self.max_iterations
         )
 
-    def __call__(self, input: str):
+    def __call__(self, input: str = ""):
         """
         Invoke the LLM with the user prompt.
         """
-        # Use the agent executor to process the input
-        # Prepare input with chat history
-
-        # some agent roles have differnet input variables
-        if self.agent_role == 'Main Orchestrator':
-            input_templates = {
-                "input": input,
-            }
-        else: 
-            # fix htis 
-            # "\n".join([f"{tool.name}: {tool.description}" for tool in self.tools])
-            input_templates = {
-            "input": input,
-            }
-    
-        # Use the agent executor to process the input
-        result = self.agent_executor.invoke(input_templates)
+        # all agents needs to have an input (whether it is optional or not) 
+        # tools, tool_names, agent_scratchpad: are automatically mapped and infer by the create_react_agent
+        result = self.agent_executor.invoke({"input" : input})
         return result["output"]
     
     def _create_default_tool(self) -> Tool:

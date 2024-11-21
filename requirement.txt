@@ -4,3 +4,5 @@
 # langchain
 # langchain community 
 # os
+
+# CONTAINERIZATION

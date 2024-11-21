@@ -25,11 +25,8 @@ class UserLLM():
 
 
     # call the llm after it builds the prompt
-    def __call__(self):
-       
-       full_input = ""
-
-       return self.user(full_input)
+    def __call__(self, input):
+       return self.user(input)
     
     # receives input from the users.
     def get_user_input(self, prompt: str) -> str:
