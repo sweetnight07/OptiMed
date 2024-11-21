@@ -9,6 +9,9 @@ from prompts.all_template import DIAGNOSIS_TEMPLATE
 
 from langchain.agents import Tool
 
+mock_patient_info = """
+John Doe, a 45-year-old male, reports experiencing persistent chest pain, shortness of breath, occasional dizziness, and fatigue for the past two weeks. His medical history includes hypertension diagnosed five years ago, managed with medication, and borderline high cholesterol with no current treatment. He has a family history of heart disease, as his father suffered a heart attack at age 50. He has no known allergies.
+"""
 
 class DiagnosisLLM():
     def __init__(self):
@@ -28,13 +31,14 @@ class DiagnosisLLM():
     def __call__(self, report):
        
        full_input = f"""{DIAGNOSIS_TEMPLATE}
-       
+
 Current Report:
 {str(report)}
 (END OF FORM)
 """
-
+       
        return self.diagnosis(full_input)
+    
 
 
         

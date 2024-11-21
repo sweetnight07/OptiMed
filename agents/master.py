@@ -65,7 +65,6 @@ Here Is The Current Report:
 {str(report)}
 (END OF FORM)
 """
-        print(report)
         # Add a message from the master
 
         output = self.master(master_input)
@@ -123,7 +122,7 @@ Here Is The Current Report:
             if "USER INTERACTION" in last_master_message.upper():
                 return "user node"
             elif "DIAGNOSIS" in last_master_message.upper():
-                return "diagnosis node"
+                  return "diagnosis node"
             else:
                 return "master"  # Stay in master node if no clear routing
 
@@ -132,6 +131,7 @@ Here Is The Current Report:
             "master",
             route_master
         )
+
         # bidirectional information will go to users 
         workflow.add_edge("user node", "master")
         workflow.add_edge("diagnosis node", "master")
@@ -170,7 +170,7 @@ Current Report:
 (END OF FORM)
 
 """
-        print(full_input)
+        # there is a template, but not the 
         master_response = self.master(full_input)
         return master_response
 

@@ -20,7 +20,7 @@ Begin!
 Question: {input}
 Thought:{agent_scratchpad}
 """
-
+# PASS IN MasterLLM
 MASTER_TEMPLATE = """
 Please delegate the agents needed to fill out the form below:
 
@@ -41,6 +41,12 @@ Action: [agent_name]
 Final Answer: The final answer should be the agent name.
 
 Begin!
+
+HERE IS THE CURRENT FORM:
+
+{input}
+
+(END OF FORM)
 """
 
 

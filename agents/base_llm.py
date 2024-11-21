@@ -4,8 +4,8 @@ from typing import List, Optional
 from dotenv import load_dotenv
 
 # import LangChain packages
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.messages import SystemMessage
+from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
+from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
 from langchain.agents import Tool, create_react_agent, AgentExecutor
 
@@ -38,15 +38,28 @@ class OpenAILLMs:
         # Initialize tools and prompts
         self.tools = tools or [self._create_default_tool()]
         self.system_prompt = system_prompt or DEFAULT_SYSTEM_MESSAGE
+        # template
         self.template = template or TEMPLATE
         self.agent_role = agent_role
+
+        print("START OF TEMPLATE")
+        print(self.template)
+        print("END OF TEMPLATE")
+
+
+        # SPECIAL TEMPLATE FOR EACH AGENT ROLE
 
         # Set up the ChatPromptTemplate with the TEMPLATE
         self.prompt = ChatPromptTemplate.from_messages([
             SystemMessage(content=self.system_prompt),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("human", self.template)
+            # chat history maybe later
+            HumanMessagePromptTemplate.from_template(
+                template=self.template) # this automated templated 
         ])
+        # NOTES 
+        # It seems the ChatPromptTemplate has alot of keys that you can fill
+        # such as the input variable within a template 
+        print(self.prompt)
 
         # Create the agent
         self.agent = create_react_agent(
@@ -69,13 +82,21 @@ class OpenAILLMs:
         """
         # Use the agent executor to process the input
         # Prepare input with chat history
-        input_dict = {
-            "input": input,
-            "chat_history": []
-        }
 
+        # some agent roles have differnet input variables
+        if self.agent_role == 'Main Orchestrator':
+            input_templates = {
+                "input": input,
+            }
+        else: 
+            # fix htis 
+            # "\n".join([f"{tool.name}: {tool.description}" for tool in self.tools])
+            input_templates = {
+            "input": input,
+            }
+    
         # Use the agent executor to process the input
-        result = self.agent_executor.invoke(input_dict)
+        result = self.agent_executor.invoke(input_templates)
         return result["output"]
     
     def _create_default_tool(self) -> Tool:

@@ -21,13 +21,13 @@ class UserLLM():
             )
         ]
 
-        self.user = OpenAILLMs(system_prompt=USER_SYSTEM_PROMPT, tools=self.user_tools, agent_role="User Interaction Agent")
+        self.user = OpenAILLMs(system_prompt=USER_SYSTEM_PROMPT, template=USER_TEMPLATE, tools=self.user_tools, agent_role="User Interaction Agent")
 
 
     # call the llm after it builds the prompt
     def __call__(self):
        
-       full_input = f"""{USER_TEMPLATE}"""
+       full_input = ""
 
        return self.user(full_input)
     

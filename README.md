@@ -56,7 +56,7 @@ Implementation Steps:
 
 - HAHHAAHHAHAHAHA HAAHAHAHAH the output cell was empty but if you copy it there was acutal reasoning bruhhhhh
 
-
+-- I SEEEEEEEEEEEE THE CREATE REACT AUTOMATICALLY HAS A HIDDEN TOOLS NAME AND TOOOLS, anD  SCRATCH PAD SO MAKE SURE THEY ARE IN THE PROMPT
 
 #### PROBELMS FOR THE SAKE OF SIMPLICITY WE WILL NOT IMPLEMENT A DIAGNOSIS TEAM
 
@@ -70,16 +70,24 @@ CODE TOP BUT PROMPT ENGINEER BOTTOM UP
 
 #### Resources
 
-- Initialize Agents: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html#langchain.agents.agent_types.AgentType
+##### Prompt 
+    - ChatPromptTemplate (MUST READ): https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html
 
+    - HumanPromptTemplate: https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html
+
+    - SystemMessage: https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html
+
+##### Agent
+    - CreateReactAgent: https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html
     - AgentType: https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html
 
     - AgentExecutor: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html#langchain.agents.agent.AgentExecutor
 
-- Tools
+##### Tools
     - https://python.langchain.com/docs/how_to/custom_tools/
 
-- Graphs 
+##### LangGraph
+
     - https://langchain-ai.github.io/langgraph/concepts/low_level/#threads
 
 # Thoguht Process 
@@ -94,7 +102,7 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 - use a agentstate to keep track of hte state of hte report
 
-
+- OH SHOOT, CHATPROMPT USES PROMPT TEMPLATE AND TO INVOKE YOU FILL THESE IN BUT MAKE SURE IT IS IN A DICT
 
 - ideally we add everythign to the prioir ddatabase
 

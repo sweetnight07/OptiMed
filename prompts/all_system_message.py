@@ -50,5 +50,5 @@ Your task is to analyze the patient's input from the **patient_input** section o
 - If there isn't enough information to make a diagnosis, indicate that further details or tests are needed.
 - Avoid making unsubstantiated claims; rely on the given data to guide your response.
 
-Deliver your diagnosis in a structured format:
+Deliver your diagnosis in a structured format.
 """
