@@ -42,7 +42,7 @@ class PDFVectorDatabase:
         self.pdf_directories.append(directory)
 
     def load_pdfs(self, directory: Optional[str] = None):
-        """load pdfs """
+        """load pdfs by taking in the pdf, splitting them and adding their chunks in the vector """
         all_docs = []
         
         # Determine which directories to process
@@ -125,15 +125,3 @@ class PDFVectorDatabase:
         
         # Regular similarity search
         return self.vectorstore.similarity_search(query, k=k)
-    
-    def get_document_sources(self) -> List[str]:
-        """
-        Get a list of all PDF sources in the database
-        
-        Returns:
-            List of unique PDF filenames
-        """
-        if not self.loaded_documents:
-            return []
-        
-        return list(set(doc.metadata['source'] for doc in self.loaded_documents))

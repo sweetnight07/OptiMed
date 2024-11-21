@@ -68,29 +68,8 @@ CODE TOP BUT PROMPT ENGINEER BOTTOM UP
 - IT is chronolgoical system but finetung laters 
 
 
-#### Resources
 
-##### Prompt 
-    - ChatPromptTemplate (MUST READ): https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html
-
-    - HumanPromptTemplate: https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html
-
-    - SystemMessage: https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html
-
-##### Agent
-    - CreateReactAgent: https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html
-    - AgentType: https://api.python.langchain.com/en/latest/agents/langchain.agents.initialize.initialize_agent.html
-
-    - AgentExecutor: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html#langchain.agents.agent.AgentExecutor
-
-##### Tools
-    - https://python.langchain.com/docs/how_to/custom_tools/
-
-##### LangGraph
-
-    - https://langchain-ai.github.io/langgraph/concepts/low_level/#threads
-
-# Thoguht Process 
+### Thoguht Process 
 
 - create a generic llm for better coding practice (give it the chance to create reasoning or regular agent)
 
@@ -112,11 +91,35 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 - Incorporates some use of knowledge graphs 
 
-#### Further Implementation
-⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️
+### Further Implementation
+## -----------------------------------------------------------------------------------------
 - Subgraph In Diagnosis: Extend The Diagnosis Agent To Be A Sub Graph With Many Specialist Agent
 - Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered
--  
+- 
 
 
+## Resources
+
+#### Prompting 
+
+- [ChatPromptTemplate (MUST READ)](https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html)
+
+- [HumanPromptTemplate](https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html)
+
+- [SystemMessage](https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html)
+
+#### Agent
+- [CreateReactAgent](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html)
+- [AgentExecutor](https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html#langchain.agents.agent.AgentExecutor)
+
+##### Tools
+- [Custom Tools](https://python.langchain.com/docs/how_to/custom_tools/)
+
+##### LangGraph
+
+- [LangGraph Thread](https://langchain-ai.github.io/langgraph/concepts/low_level/#threads)
+
+#### Vector 
+
+- [FAISS]
 
