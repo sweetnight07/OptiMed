@@ -1,3 +1,0 @@
-DIAGNOSTIC_EXAMPLE = """
-
-"""

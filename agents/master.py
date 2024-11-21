@@ -104,6 +104,9 @@ Here Is The Current Report:
         })
 
         return report
+    
+    def diagnosis_node(self, report: Report)
+        
 
 
     def build_workflow(self):

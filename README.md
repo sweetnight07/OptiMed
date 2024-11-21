@@ -56,6 +56,12 @@ Implementation Steps:
 
 - HAHHAAHHAHAHAHA HAAHAHAHAH the output cell was empty but if you copy it there was acutal reasoning bruhhhhh
 
+
+
+#### PROBELMS FOR THE SAKE OF SIMPLICITY WE WILL NOT IMPLEMENT A DIAGNOSIS TEAM
+- IT is chronolgoical system but finetung laters 
+
+
 #### Resources
 
 - Initialize Agents: https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html#langchain.agents.agent_types.AgentType
