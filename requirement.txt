@@ -1,8 +1,0 @@
-# will fill later
-
-# openai
-# langchain
-# langchain community 
-# os
-
-# CONTAINERIZATION

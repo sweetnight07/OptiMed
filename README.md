@@ -58,6 +58,9 @@ Implementation Steps:
 
 -- I SEEEEEEEEEEEE THE CREATE REACT AUTOMATICALLY HAS A HIDDEN TOOLS NAME AND TOOOLS, anD  SCRATCH PAD SO MAKE SURE THEY ARE IN THE PROMPT
 
+- PDF OR IMAGES 
+## Composition
+
 #### PROBELMS FOR THE SAKE OF SIMPLICITY WE WILL NOT IMPLEMENT A DIAGNOSIS TEAM
 
 CODE TOP BUT PROMPT ENGINEER BOTTOM UP
@@ -69,7 +72,7 @@ CODE TOP BUT PROMPT ENGINEER BOTTOM UP
 
 
 
-### Thoguht Process 
+## Thoguht Process 
 
 - create a generic llm for better coding practice (give it the chance to create reasoning or regular agent)
 
@@ -91,11 +94,10 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 - Incorporates some use of knowledge graphs 
 
-### Further Implementation
-## -----------------------------------------------------------------------------------------
+## Further Implementation
 - Subgraph In Diagnosis: Extend The Diagnosis Agent To Be A Sub Graph With Many Specialist Agent
 - Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered
-- 
+- More Data: Create Folders For More Disciplines And Their Own Vector Database
 
 
 ## Resources
