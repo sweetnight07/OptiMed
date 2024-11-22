@@ -30,9 +30,9 @@ from langchain.agents import Tool
 class Report(TypedDict):
     """
     Defines the state for the multi-agent workflow
-    Includes messages, patient input, and workflow states
+    Includes messages, patient info, and workflow states
     """
-    patient_input: str
+    patient_info: str
     messages: Annotated[List[dict], add]
     diagnosis: str
     recommendations: str
@@ -42,7 +42,7 @@ class MasterWorkflow:
     def __init__(self):
         # initial report
         self.initial_report = {
-            "patient_input" : "",
+            "patient_info" : "",
             "messages" : [],
             "diagnosis" : "",
             "recommendations" : "",
@@ -83,7 +83,7 @@ class MasterWorkflow:
         user_input = self.user_agent(report) # has a template filled should pass in the report laters 
         
         # the summary is now the patient info hypothetically 
-        report['patient_input'] = user_input
+        report['patient_info'] = user_input
 
         report['messages'].append({
             "role": "user", 
@@ -110,7 +110,7 @@ class MasterWorkflow:
 
         workflow.add_node("master", self.master_node)
         workflow.add_node("user node", self.user_node)
-        # workflow.add_node("diagnosis node", self.diagnosis_node)
+        workflow.add_node("diagnosis node", self.diagnosis_node)
 
         workflow.set_entry_point("master")
 

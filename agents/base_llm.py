@@ -25,7 +25,7 @@ class OpenAILLMs:
                  template: Optional[str] = None,
                  temperature: float = 0.3,
                  agent_role: str = 'Default Agent',
-                 max_iterations = 4):
+                 max_iterations = 7):
 
         # get the key
         self.openai_key = os.getenv('OPENAI_API_KEY')
@@ -47,13 +47,6 @@ class OpenAILLMs:
         # template
         self.template = template or TEMPLATE
         self.agent_role = agent_role
-
-        print("START OF TEMPLATE")
-        print(self.template)
-        print("END OF TEMPLATE")
-
-
-        # SPECIAL TEMPLATE FOR EACH AGENT ROLE
 
         # Set up the ChatPromptTemplate with the TEMPLATE
         self.prompt = ChatPromptTemplate.from_messages([
@@ -83,13 +76,21 @@ class OpenAILLMs:
             max_iterations=self.max_iterations
         )
 
-    def __call__(self, input: str = ""):
+    def __call__(self, input: str = "", examples: str = ""):
         """
         Invoke the LLM with the user prompt.
         """
         # all agents needs to have an input (whether it is optional or not) 
         # tools, tool_names, agent_scratchpad: are automatically mapped and infer by the create_react_agent
-        result = self.agent_executor.invoke({"input" : input})
+        # Create invoke arguments with required parameters
+        invoke_args = {"input": input}
+        
+        # Only add examples if provided
+        if examples:
+            invoke_args["examples"] = examples
+
+
+        result = self.agent_executor.invoke(invoke_args)
         return result["output"]
     
     def _create_default_tool(self) -> Tool:
@@ -101,7 +102,7 @@ class OpenAILLMs:
         return Tool(
             name="respond_tool",
             func=default_tool_func,
-            description="A tool to respond to general queries or statements."
+            description="A tool to respond to general queries or statements"
         )
 
 

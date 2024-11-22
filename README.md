@@ -1,3 +1,8 @@
+![alt text](prompting.png)
+
+
+
+
 ### Here Are Some Note Worthy Features
 1. Reasoning Capabilities 
 2. Multi-Agent Conversing and Facilitation (LangGraph)
@@ -67,9 +72,13 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 ## Further Implementation
 - Subgraph In Diagnosis: Extend The Diagnosis Agent To Be A Sub Graph With Many Specialist Agent
-- Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered
+- Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered and Flexible Additional Without Recreation
 - More Data: Create Folders For More Disciplines And Their Own Vector Database
 - Deterministic Outputs: Implement Few Shot Learning (FSL)
+- Tokenize the Documents: 
+- HAVE DIFFERENT PROMPTING TECHNIQUES FOR DIFFERENT AGENTS
+
+
 
 
 
@@ -82,6 +91,8 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 - [HumanPromptTemplate](https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html)
 
 - [SystemMessage](https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html)
+
+- [Prompt Techniques](https://www.promptingguide.ai/techniques)
 
 #### Agent
 - [CreateReactAgent](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html)
@@ -97,4 +108,10 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 #### Vector 
 
 - [FAISS]
+
+
+####
+- [OTHERS](https://www.roro.io/post/7-practical-ways-to-prevent-llm-hallucinations-and-protect-your-product)
+
+
 

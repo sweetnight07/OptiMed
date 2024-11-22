@@ -10,6 +10,7 @@ from agents.base_llm import OpenAILLMs
 
 from prompts.all_system import USER_SYSTEM_PROMPT
 from prompts.all_template import USER_TEMPLATE
+from prompts.all_examples import USER_EXAMPLE
 
 from langchain.agents import Tool
 
@@ -30,7 +31,7 @@ class UserLLM():
 
     # call the llm after it builds the prompt
     def __call__(self, input):
-       return self.user(input)
+       return self.user(input, USER_EXAMPLE)
     
     # receives input from the users.
     def get_user_input(self, prompt: str) -> str:
