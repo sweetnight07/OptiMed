@@ -14,7 +14,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
 from langchain.agents import Tool, create_react_agent, AgentExecutor
 
-from prompts.all_system_message import DEFAULT_SYSTEM_MESSAGE
+from prompts.all_system import DEFAULT_SYSTEM_MESSAGE
 from prompts.all_template import TEMPLATE
 
 class OpenAILLMs:

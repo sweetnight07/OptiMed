@@ -6,37 +6,6 @@
 4. Hugging Face Integration (Recommendation System Agent)
 5. Google Calendar Planning (Scheduler Agent)
 
-
-
-### Specific Use Case
-Caridiology and Neurology 
-
-### Steps To Implementation
-Implementation Steps:
-
-1. Set Up Environment, Import Relevant Packages, Plan MultiAgentSystem Goals and Tools
-
-2. Create Base LLM Class
-
-3. Create The Diagnosis Agent
-3a. General Practioner
-3b. Specialist
-
-4. Create Coordinator Agent (MAS Converse)
-4a. conversation_management: structures the dialogue flow
-4b. consensus_builder: synthesizes opinions and facilitates agreement
-
-5. Generalist Agent
-5a. patient_history_access:
-5b. intial_assessment
-5c. referal_recommendation
-
-. Specialist (Cardiologist) Tools
-7a. medical_search
-7
-
-
-
 ### Some Problems You Might Run Into
 - incorrect API key provided: three reasons: invalid key from the source, created api key may take a while to be active, the key is not reflective of the current key from the .env (consider restarting environment)
 
@@ -94,10 +63,14 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 - Incorporates some use of knowledge graphs 
 
+- Modularize the tools, maybe even having tool and within it (search tools | query tools | user interaction tool) 
+
 ## Further Implementation
 - Subgraph In Diagnosis: Extend The Diagnosis Agent To Be A Sub Graph With Many Specialist Agent
 - Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered
 - More Data: Create Folders For More Disciplines And Their Own Vector Database
+- Deterministic Outputs: Implement Few Shot Learning (FSL)
+
 
 
 ## Resources

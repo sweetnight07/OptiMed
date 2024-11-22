@@ -8,7 +8,7 @@ os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 from agents.base_llm import OpenAILLMs
 
 
-from prompts.all_system_message import USER_SYSTEM_PROMPT
+from prompts.all_system import USER_SYSTEM_PROMPT
 from prompts.all_template import USER_TEMPLATE
 
 from langchain.agents import Tool

@@ -8,7 +8,7 @@ os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 from agents.base_llm import OpenAILLMs
 
 
-from prompts.all_system_message import DIAGNOSIS_SYSTEM_PROMPT
+from prompts.all_system import DIAGNOSIS_SYSTEM_PROMPT
 from prompts.all_template import DIAGNOSIS_TEMPLATE
 
 from langchain.agents import Tool
@@ -19,6 +19,9 @@ John Doe, a 45-year-old male, reports experiencing persistent chest pain, shortn
 
 class DiagnosisLLM():
     def __init__(self):
+        # set up the utils 
+        
+
         # set up diagnosis tools 
         self.diagnostic_tools = [
             Tool(

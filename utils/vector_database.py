@@ -25,7 +25,7 @@ class PDFVectorDatabase:
 
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
-            chunk_overlap=200,
+            chunk_overlap=200, # for more context
             length_function=len
         )
 
@@ -38,9 +38,9 @@ class PDFVectorDatabase:
     def add_pdf_directory(self, directory: str):
         """ adds to the pdf directory"""
         if os.path.exists(directory):
-            print("File exists")
+            print("Directory exists")
         else:
-            print("File does not exist")
+            print("Directory does not exist")
 
         self.pdf_directories.append(directory)
 

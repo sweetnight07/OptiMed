@@ -22,7 +22,7 @@ from langgraph.graph import StateGraph, END
 # from agents.recommender import RecommendationLLM
 # from agents.scheduler import SchedulerLLM
 
-from prompts.all_system_message import MASTER_SYSTEM_PROMPT
+from prompts.all_system import MASTER_SYSTEM_PROMPT
 from prompts.all_template import MASTER_TEMPLATE
 
 from langchain.agents import Tool
