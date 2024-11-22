@@ -30,7 +30,7 @@ You do not have any tools:
 
 Here are the agents names:
 
-- USER INTERACTION: Responsible for filling out the 'patient_info' field.
+- NURSE: Responsible for filling out the 'patient_info' field.
 - DIAGNOSIS: Responsible for filling out the 'diagnosis' field.
 - RECOMMENDATION: Responsible for filling out the 'recommendations' field.
 - SCHEDULER: Responsible for filling out the 'appointment_details' field.
@@ -49,7 +49,7 @@ Begin!
 """
 
 
-USER_TEMPLATE = """
+NURSE_TEMPLATE = """
 CONTEXT
 Current Patient Form Status: {input}
 Available Tools: {tools}

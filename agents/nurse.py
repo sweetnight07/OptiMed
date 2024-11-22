@@ -8,17 +8,17 @@ os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 from agents.base_llm import OpenAILLMs
 
 
-from prompts.all_system import USER_SYSTEM_PROMPT
-from prompts.all_template import USER_TEMPLATE
-from prompts.all_examples import USER_EXAMPLE
+from prompts.all_system import NURSE_SYSTEM_PROMPT
+from prompts.all_template import NURSE_TEMPLATE
+from prompts.all_examples import NURSE_EXAMPLE
 
 from langchain.agents import Tool
 
-class UserLLM():
+class NurseLLM():
     def __init__(self):
         # get users 
 
-        self.user_tools = [
+        self.nurse_tools = [
             Tool(
                 name="get_user_input",
                 func=self.get_user_input,
@@ -26,12 +26,12 @@ class UserLLM():
             )
         ]
 
-        self.user = OpenAILLMs(system_prompt=USER_SYSTEM_PROMPT, template=USER_TEMPLATE, tools=self.user_tools, agent_role="User Interaction Agent")
+        self.user = OpenAILLMs(system_prompt=NURSE_SYSTEM_PROMPT, template=NURSE_TEMPLATE, tools=self.nurse_tools, agent_role="Nurse Agent")
 
 
     # call the llm after it builds the prompt
     def __call__(self, input):
-       return self.user(input, USER_EXAMPLE)
+       return self.user(input, NURSE_EXAMPLE)
     
     # receives input from the users.
     def get_user_input(self, prompt: str) -> str:

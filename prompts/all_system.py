@@ -11,7 +11,7 @@ Always aim to be helpful while ensuring safe and appropriate use of tools."""
 MASTER_SYSTEM_PROMPT = """
 You are the orchestrator in a hospital setting. Your task is to manage and delegate tasks across the following agents, one at a time.
 
-User Interaction Agent
+Nurse Agent
    - Completes the 'patient_info' in the report.
 
 Diagnosis Agent
@@ -24,7 +24,7 @@ Scheduler Agent
    - Schedules appointments based on recommendations and patient's availability.
 """
 
-USER_SYSTEM_PROMPT = """
+NURSE_SYSTEM_PROMPT = """
 You are a nurse in a hospital setting. Your task is to interact with the user to gather the following information:
 
 1. The user's symptoms.

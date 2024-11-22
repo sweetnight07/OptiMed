@@ -11,7 +11,7 @@ from operator import add
 import uuid
 
 from agents.base_llm import OpenAILLMs
-from agents.user import UserLLM
+from agents.nurse import NurseLLM
 from agents.diagnosis import DiagnosisLLM
 
 
@@ -55,8 +55,8 @@ class MasterWorkflow:
         self.current_report = self.initial_report.copy()
 
         # initialize llm agents
-        self.master = OpenAILLMs(system_prompt=MASTER_SYSTEM_PROMPT, template=MASTER_TEMPLATE, agent_role="Main Orchestrator")
-        self.user_agent = UserLLM()
+        self.master_agent = OpenAILLMs(system_prompt=MASTER_SYSTEM_PROMPT, template=MASTER_TEMPLATE, agent_role="Master Agent")
+        self.nurse_agent = NurseLLM()
         self.diagnosis_agent = DiagnosisLLM()
 
         # build the workflow
@@ -67,7 +67,7 @@ class MasterWorkflow:
         # Construct the full input by combining the master template, current report, and prompt
         # Add a message from the master
 
-        output = self.master(report)
+        output = self.master_agent(report)
 
         # routing purposes 
         report['messages'].append({
@@ -78,16 +78,16 @@ class MasterWorkflow:
         return report
         
     # only have access to the patent 
-    def user_node(self, report: Report):
+    def nurse_node(self, report: Report):
         # gets the summary 
-        user_input = self.user_agent(report) # has a template filled should pass in the report laters 
+        nurse_input = self.nurse_agent(report) # has a template filled should pass in the report laters 
         
         # the summary is now the patient info hypothetically 
-        report['patient_info'] = user_input
+        report['patient_info'] = nurse_input
 
         report['messages'].append({
-            "role": "user", 
-            "content": user_input
+            "role": "nurse", 
+            "content": nurse_input
         })
 
         return report
@@ -108,33 +108,33 @@ class MasterWorkflow:
         """ Construct the workflow using"""
         workflow = StateGraph(Report)
 
-        workflow.add_node("master", self.master_node)
-        workflow.add_node("user node", self.user_node)
+        workflow.add_node("master node", self.master_node)
+        workflow.add_node("nurse node", self.nurse_node)
         workflow.add_node("diagnosis node", self.diagnosis_node)
 
-        workflow.set_entry_point("master")
+        workflow.set_entry_point("master node")
 
         # Routing logic
         def route_master(report: Report):
             """Determine the next node based on master's output"""
             last_master_message = report['messages'][-1]['content'] if report['messages'] else ""
             
-            if "USER INTERACTION" in last_master_message.upper():
-                return "user node"
+            if "NURSE" in last_master_message.upper():
+                return "nurse node"
             elif "DIAGNOSIS" in last_master_message.upper():
                   return "diagnosis node"
             else:
-                return "master"  # Stay in master node if no clear routing
+                return "master node"  # Stay in master node if no clear routing
 
         # Add conditional edges
         workflow.add_conditional_edges(
-            "master",
+            "master node",
             route_master
         )
 
         # bidirectional information will go to users 
-        workflow.add_edge("user node", "master")
-        workflow.add_edge("diagnosis node", "master")
+        workflow.add_edge("nurse node", "master node")
+        workflow.add_edge("diagnosis node", "master node")
 
         checkpointer = MemorySaver()
 
@@ -162,7 +162,7 @@ class MasterWorkflow:
     def test_call(self, report: Report):
         # Construct the full input by combining the master template, current report, and prompt
 
-        master_response = self.master(str(report))
+        master_response = self.master_agent(str(report))
         return master_response
 
     def test_run(self, report: Report):

@@ -1,4 +1,4 @@
-USER_EXAMPLE = """
+NURSE_EXAMPLE = """
 Example 1:
 
 Current Form: 
