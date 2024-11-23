@@ -7,7 +7,6 @@ os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 
 from agents.base_llm import OpenAILLMs
 
-
 from prompts.all_system import NURSE_SYSTEM_PROMPT
 from prompts.all_template import NURSE_TEMPLATE
 from prompts.all_examples import NURSE_EXAMPLE

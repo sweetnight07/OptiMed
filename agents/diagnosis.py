@@ -17,7 +17,7 @@ from prompts.all_examples import DIAGNOSIS_EXAMPLES
 from langchain.agents import Tool
 
 from utils.vector_database import PDFVectorDatabase
-from utils.ddg_search import DDGSearch
+from utils.ddg_search_engine import DDGSearch
 
 class DiagnosisLLM():
     def __init__(self):

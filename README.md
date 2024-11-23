@@ -123,3 +123,7 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 -- TODO 
 - ADD SEARCH ENGINE AND TESTING AND EXMAPLES FOR IT
 - NEED ROBUST TESTING
+
+- RECOMMENDATION SHOULD BE RELIABLE AS POSSIBLE HENCE WE USE CDC, DIAGNOSIS NEEDS GATHER AS MUCH INFOMRATION
+
+- Implement dynamic webscraping/ just realized that i couldv'e queried the url 

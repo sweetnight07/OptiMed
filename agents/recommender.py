@@ -5,18 +5,24 @@ from dotenv import load_dotenv
 load_dotenv()
 os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 
-from agents.base_llm import OpenAILLMs
-import data.patient_information as data
-from langchain.agents import Tool
-from prompts.generalist.generalist_prompt import generalist_prompt
-from prompts.generalist.generalist_example import GENERALIST_EXAMPLE
+from typing import List 
 
+from agents.base_llm import OpenAILLMs
+
+
+from prompts.all_system import RECOMMENDATION_SYSTEM_PROMPT
+from prompts.all_template import RECOMMENDATION_TEMPLATE
+
+from langchain.agents import Tool
+
+from utils.vector_database import PDFVectorDatabase
+from utils.ddg_search_engine import DDGSearch
 class RecommendationLLM():
     def __init__(self):
         # collect the tools
         self.tools = [
             Tool(
-                name="access_patient_history",
+                name="search_cdc",
                 func=self.access_patient_history,
                 description="Access and analyze patient's historical medical records. Input should be a patient ID string."
             ),
