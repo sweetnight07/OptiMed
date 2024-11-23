@@ -19,8 +19,8 @@ class PDFVectorDatabase:
         self.embeddings = OpenAIEmbeddings(model=embedding_model)
 
         self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=200, # for more context
+            chunk_size=500,
+            chunk_overlap=100, # for more context
             length_function=len
         )
 

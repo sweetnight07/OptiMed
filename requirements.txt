@@ -8,12 +8,14 @@ asyncio==3.4.3
 attrs==24.2.0
 certifi==2024.8.30
 charset-normalizer==3.4.0
+click==8.1.7
 colorama==0.4.6
 comm==0.2.2
 dataclasses-json==0.6.7
 debugpy==1.8.8
 decorator==5.1.1
 distro==1.9.0
+duckduckgo_search==6.3.6
 executing==2.1.0
 faiss-cpu==1.9.0.post1
 frozenlist==1.5.0
@@ -31,9 +33,9 @@ jsonpatch==1.33
 jsonpointer==3.0.0
 jupyter_client==8.6.3
 jupyter_core==5.7.2
-langchain==0.3.7
-langchain-community==0.3.7
-langchain-core==0.3.19
+langchain==0.3.8
+langchain-community==0.3.8
+langchain-core==0.3.21
 langchain-openai==0.2.9
 langchain-text-splitters==0.3.2
 langgraph==0.2.52
@@ -52,6 +54,7 @@ orjson==3.10.11
 packaging==24.2
 parso==0.8.4
 platformdirs==4.3.6
+primp==0.8.0
 prompt_toolkit==3.0.48
 propcache==0.2.0
 psutil==6.1.0

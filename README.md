@@ -77,6 +77,7 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 - Deterministic Outputs: Implement Few Shot Learning (FSL)
 - Tokenize the Documents: 
 - HAVE DIFFERENT PROMPTING TECHNIQUES FOR DIFFERENT AGENTS
+- Efficient Searching: Implementing A Caching System and Switch To Google But Search API Cost Money
 
 
 
@@ -115,3 +116,10 @@ If there is uncertainty or they require further collaboration, a Secondary Coord
 
 
 
+- WHY LANGGRAPH,IF YOU DEFINE THE SCOPE THEN EACH AGENT ARE ONLY RESPONSIBLE FOR THEIR OWN SPECIFC PART IN HE STATE RATHER CONSIDERING ALL THE DIFFERENT SCENARIO
+
+-- FIX FOR MORE CONSISTENT FORMAT FOR SYSTEM, TEMPALTE, EXMAPLES
+
+-- TODO 
+- ADD SEARCH ENGINE AND TESTING AND EXMAPLES FOR IT
+- NEED ROBUST TESTING
