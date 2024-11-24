@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
-from langchain.agents import create_react_agent, AgentExecutor, Tool, AgentType
+from langchain.agents import create_react_agent, AgentExecutor, Tool
 
-# import prompting file
+# import my file
 from prompts.all_system import DEFAULT_SYSTEM_MESSAGE
 from prompts.all_template import TEMPLATE
 
@@ -24,14 +24,12 @@ class MyAgent:
                  agent_role: str = 'Default Agent',
                  max_iterations = 7):
         """
-        
         initailzes a customizable agent
         
         1. Base ReAct agent: Custom tools, uses default template and system prompt
         2. Custom ReAct agent: Custom tools, uses custom template and system prompt
         3. Basic LLM: No tools, uses default system prompt
         4. Custom LLM: No tools, uses custom default system prompt 
-        
         """
         # get the key
         self.openai_key = self._setup_environment_and_extract_keys()

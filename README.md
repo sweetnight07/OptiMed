@@ -4,6 +4,8 @@
 
 
 ### Here Are Some Note Worthy Features
+1. Configurable and Flexible Open Ai
+2. Customizable Tools
 1. Reasoning Capabilities 
 2. Multi-Agent Conversing and Facilitation (LangGraph)
 3. Search Capabilities 

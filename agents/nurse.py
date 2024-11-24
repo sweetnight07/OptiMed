@@ -1,38 +1,56 @@
+# import other packages
 import os 
-
-# go to workspace directory
 from dotenv import load_dotenv
-load_dotenv()
-os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 
-from agents.base_llm import OpenAILLMs
+# import langchain packages
+from langchain.agents import Tool
+
+# import my file
+from agents.agent import MyAgent
 
 from prompts.all_system import NURSE_SYSTEM_PROMPT
 from prompts.all_template import NURSE_TEMPLATE
 from prompts.all_examples import NURSE_EXAMPLE
 
-from langchain.agents import Tool
+from tools.tool import UserInputTool
 
 class NurseLLM():
     def __init__(self):
-        # get users 
+        """
+        intializes the nurse agent
+        """
+        # set up environemnt
+        self._setup_environment()
 
+        # collect tools
+        self.user_input_tool = UserInputTool()
+
+        # set up the nurse tools
         self.nurse_tools = [
             Tool(
-                name="get_user_input",
-                func=self.get_user_input,
-                description="Prompts the user for input and returns their response."
+                name=self.user_input_tool.name,
+                func=self.user_input_tool,
+                description=self.user_input_tool.description
             )
         ]
 
-        self.user = OpenAILLMs(system_prompt=NURSE_SYSTEM_PROMPT, template=NURSE_TEMPLATE, tools=self.nurse_tools, agent_role="Nurse Agent")
+        # create the nurse agent
+        self.nurse = MyAgent(tools=self.nurse_tools, 
+                                   system_prompt=NURSE_SYSTEM_PROMPT, 
+                                   template=NURSE_TEMPLATE, 
+                                   agent_role="Nurse Agent")
 
+    def _setup_environment(self):
+        """load environment variables and set workspace directory and optionally returns keys."""
+        load_dotenv()
+        workspace_directory = os.getenv('WORKSPACE_DIRECTORY')
 
-    # call the llm after it builds the prompt
-    def __call__(self, input):
-       return self.user(input, NURSE_EXAMPLE)
+        if not workspace_directory:
+            raise ValueError("WORKSPACE_DIRECTORY not set in environment variables")
+        
+        os.chdir(workspace_directory)
+
+    def __call__(self, report):
+        """ invoke the agent with the prompt with optional examples depending on template"""
+        return self.nurse(report, examples=NURSE_EXAMPLE)
     
-    # receives input from the users.
-    def get_user_input(self, prompt: str) -> str:
-        """Get input from user with the provided prompt"""
-        return input(f"{prompt}\nYour response: ")
