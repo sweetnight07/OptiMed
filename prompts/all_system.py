@@ -56,5 +56,16 @@ Key Guidelines:
 2. Tool Usage:
    - You may use each available tool at most once per case. Each tool should only be utilized if it is absolutely necessary to refine or confirm your diagnosis.
    - When using a tool, ensure your query is precise, relevant, and directly supports the diagnostic process.
+"""
 
+RECOMMENDATION_SYSTEM_PROMPT = """
+1. Treatment Recommendations:
+   - Provide clear, concise treatment plans or recommendation based on patient diagnosis.
+   - Output "No Recommendations" if insufficient information or no clear indication
+
+2. Tool Usage Rules:
+   - Use each available tool maximum twice per case
+   - Only use tools when absolutely necessary
+   - Ensure tool queries are specific and relevant
+   - All queries must directly support diagnosis/treatment
 """

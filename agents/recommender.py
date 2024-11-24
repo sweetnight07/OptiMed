@@ -15,50 +15,37 @@ from prompts.all_template import RECOMMENDATION_TEMPLATE
 
 from langchain.agents import Tool
 
-from utils.vector_database import PDFVectorDatabase
-from utils.ddg_search_engine import DDGSearch
+from utils.cdc_web_scraper import CDCWebScraper
+
 class RecommendationLLM():
     def __init__(self):
         # collect the tools
-        self.tools = [
+        self.recommendation_tools = [
             Tool(
-                name="search_cdc",
-                func=self.access_patient_history,
-                description="Access and analyze patient's historical medical records. Input should be a patient ID string."
-            ),
-            Tool(
-                name="referral_recommendation",
-                func=self.make_referral_recommendation,
-                description="Generate specialist referrals based on patient assessment. Input should be a JSON string containing symptoms and risk factors."
+                name="search_cdc_online",
+                func=self.search_cdc,
+                description="searches the CDC for more information"
             )
         ]
 
-        # create the prompt for the call
-        self.generalist_prompt = generalist_prompt
-
-        self.generalist = OpenAILLMs(self.tools)
+        self.recommender = OpenAILLMs(tools=self.recommendation_tools, system_prompt=RECOMMENDATION_SYSTEM_PROMPT, template=RECOMMENDATION_TEMPLATE, agent_role="Recommendation Agent")
 
     # call the llm after it builds the prompt
-    def __call__(self, patient_id: str, symptoms: str):
-        prompt = self.build_generalist_prompt(patient_id, symptoms,  GENERALIST_EXAMPLE)
-        return self.generalist(prompt)
-
-    # format the prompt
-    def build_generalist_prompt(self, patient_id, symptoms, examples) -> str:
-        return self.generalist_prompt.format(
-                            patient_id = patient_id,
-                            symptoms = symptoms, 
-                            examples = examples)
+    def __call__(self, report):
+       return self.recommender(report)
     
+    # format the prompt
+    def search_cdc(self, query):
+        """Input Parameters: the query"""
+        webscraper = CDCWebScraper()
 
-    # create the tools
-    def access_patient_history(self, patient_id) -> str:
-        """Access patient history from the mock database."""
-        if patient_id in data.mock_patient_database:
-            return str(data.mock_patient_database[patient_id]["medical_history"])
-        return "No patient history found."
+        try:
+            webscraper.update_and_extract_search_url(query)
+            webscraper.select_source()  # Select the first source result
+            output = webscraper.extract_content_from_source()  # Extract content from the source page
+        except Exception as e:
+            output = f"Error occurred: {str(e)}"
+        finally:
+            webscraper.close()
 
-    # make referral system
-    def make_referral_recommendation(self, input_str) -> str:
-        """Analyze symptoms and make referral recommendations for either a cardiologist or neruologist."""
-        return f"Based on the provided symptoms and history: {input_str}, here are the referral recommendations..."
+        return output

@@ -89,6 +89,8 @@ CONTEXT
 Current Patient Report Status: {input}
 Available Tools: {tools}
 
+(END OF CONTEXT)
+
 TASK STRUCTURE 
 1. Review current report status and identify whether a clear diagnosis could be made.
     - If a disgnosis can not be made then you may the tools provided.
@@ -111,12 +113,49 @@ Observation: [Assess the output from the tool]
 
 Final Thought: [Verify That You Can Make Conclusion]
 Final Answer: [One of the following]
-    - [A brief description on fhe patient diagnosis.]
+    - [A brief description on the patient diagnosis.]
     - UNKNOWN
 
 Begin!
 {agent_scratchpad}
 """
+
+RECOMMENDATION_TEMPLATE = """
+CONTEXT
+Current Patient Report Status: {input}
+
+(END OF CONTEXT)
+
+You have access to the following tools:
+
+{tools}
+
+TASK STRUCTURE
+1. Review the current patient report and determine whether a treatment or diagnostic recommendation can be made.
+    - If no recommendation can be made, you may use the available tools to gather additional information.
+    - IMPORTANT: If a specific tool has already been used, it cannot be used again. However, other tools can still be utilized.
+    - Once a treatment or diagnostic recommendation is made, you may display the final answer.
+
+RESPONSE FORMAT
+Thought: [Analyze the current patient report and identify the next steps]
+Reasoning: [Justify why the next step is appropriate]
+Action: [Select a tool from {tool_names}]
+Action Input: [Diagnosis Name]
+  - Ensure you input only the condition name, not a full sentence.
+Observation: [Assess the output from the tool]
+... (This Thought/Reasoning/Action/Action Input/Observation cycle may repeat as needed until there is sufficient information or all tools have been used)
+
+Final Thought: [Verify that a conclusion can be made]
+Final Answer: [One of the following]
+    - [A brief description of the recommended treatment or diagnostic test]
+    - No Recommendations
+
+Begin!
+{agent_scratchpad}
+"""
+
+
+
 
 
 
