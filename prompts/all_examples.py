@@ -107,6 +107,7 @@ Observation: None
 
 Final Thought: The information is insufficient for a diagnosis.
 Final Answer: UNKNOWN
+"""
 
-
+RECOMMENDATION_EXAMPLES = """
 """

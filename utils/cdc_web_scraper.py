@@ -30,7 +30,7 @@ class CDCWebScraper:
         return driver
 
     def update_and_extract_search_url(self, query: str):
-        # load the base uril
+        # load the base url
         try:
             # load the base url
             self.driver.get(self.base_url)
@@ -83,66 +83,55 @@ class CDCWebScraper:
         except Exception as e:
             return f"Error selecting source: {e}"
     
-
     def extract_content_from_source(self):
-        print(self.first_result_link)
-        content = ""
-
-        if not self.first_result_link:
-            return "No Information"
+        print(f"extracting content from: {self.first_result_link}")
         
-        try: 
+        if not self.first_result_link:
+            return "no information - link is empty"
+        
+        try:
+            # navigate to the url
             self.driver.get(self.first_result_link)
 
-            # wait for the content to load
-            body_div = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "cdc-dfe-body"))
+            # wait for the page to fully load (e.g., wait until <body> tag is present)
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.TAG_NAME, "body"))
             )
 
-            found_section = False
-            sections = body_div.find_elements(By.CLASS_NAME, "dfe-section")
-
-            if not sections:
-                return "No Information"
-            for section in sections:
-                # extract the section's title (h2 or h3) if available
-                heading = ""
-                headings = section.find_elements(By.XPATH, "./h2 | ./h3")
-                if headings: 
-                    heading = headings[0].text
-                else:
-                    heading = "No heading found"  
-            
-                content += f"\n{heading}\n"
-                
-                found_section = True
-
-                # extract paragraphs in the section if any are found
-                paragraphs = section.find_elements(By.TAG_NAME, "p")
-                if paragraphs:
-                    for para in paragraphs:
-                        content += f"{para.text}\n\n"
-                else:
-                    content += "No paragraphs found.\n\n"  # handle case where no paragraphs exist
-
-                # extract list items in the section if any are found
-                list_items = section.find_elements(By.TAG_NAME, "li")
-                if list_items:
-                    for li in list_items:
-                        content += f"- {li.text}\n"
-                else:
-                    content += "No list items found.\n"  # handle case where no list items exist
-                
-                if not found_section:
-                    return "No Information"
-        except NoSuchElementException as e:
-            return "No Information"
-        except TimeoutException:
-            return "Content took too long to load"
         except Exception as e:
-            return f"Error extracting content: {e}"
-        
-        return content
+            print(f"error navigating to the page or waiting for load: {e}")
+            return "error navigating to the page"
+
+        try:
+            # tags to extract content from
+            tags_to_extract = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "li", "span"]
+            content = []
+
+            for tag in tags_to_extract:
+                # check if elements for the current tag exist
+                elements = self.driver.find_elements("tag name", tag)
+                
+                # silently skip if no elements are found
+                if not elements:
+                    continue
+                
+                # extract and add text content from elements
+                tag_content = [e.text for e in elements if e.text.strip()]
+                content.extend(tag_content)
+
+            # combine all extracted content
+            full_content = "\n".join(content).strip()
+
+            # check if there's meaningful content
+            if not full_content:
+                return "no relevant content found in the specified tags"
+
+            return full_content
+
+        except Exception as e:
+            print(f"an error occurred while extracting content: {e}")
+            return "error extracting content"
+
 
     def close(self): 
         self.driver.quit()
