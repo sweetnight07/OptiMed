@@ -91,8 +91,16 @@ class CDCSearchTool(BaseTool):
             return self._webscraper.extract_content_from_source()
         except Exception as e:
             return f"Error searching CDC website: {str(e)}"
-        finally:
-            if self._webscraper:
-                self._webscraper.close()
-                self._webscraper = None
+        
+class ParseAppointmentTool(BaseTool):
+    name: str = "parse_appointment"
+    description: str = "parses the 'appointment_details' into a formatted output to schedule"
+    pass
+
+class ScheduleAppointmentTool(BaseTool):
+    name: str = "schedule_appointment"
+    description: str = "schedules an appointment into the google calendar"
+    
+
+
 

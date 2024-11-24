@@ -22,7 +22,7 @@ class MyAgent:
                  template: Optional[str] = None,
                  temperature: float = 0.3,
                  agent_role: str = 'Default Agent',
-                 max_iterations = 7):
+                 max_iterations = 6):
         """
         initailzes a customizable agent
         

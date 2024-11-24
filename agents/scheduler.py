@@ -1,57 +1,60 @@
+# import other packages
 import os 
-# go to workspace directory
 from dotenv import load_dotenv
-load_dotenv()
-os.chdir(os.getenv('WORKSPACE_DIRECTORY'))
 
-from agents.base_llm import OpenAILLMs
-import data.patient_information as data
+# import langchain packages
 from langchain.agents import Tool
-from prompts.generalist.generalist_prompt import generalist_prompt
-from prompts.generalist.generalist_example import GENERALIST_EXAMPLE
 
-class SchedulerLLM():
+# import my file
+from agents.agent import MyAgent
+
+from prompts.all_system import RECEPTION_SYSTEM_PROMPT
+from prompts.all_template import RECEPTION_TEMPLATE
+
+from tools.tool import ParseAppointmentTool
+from tools.tool import ScheduleAppointmentTool
+
+class ReceptionAgent():
     def __init__(self):
+        """
+        initialzies the reception agent
+        """
+        # set up environment
+        self._setup_environment()
+
         # collect the tools
-        self.tools = [
+        self.parse_appointment_tool = ParseAppointmentTool()
+        self.schedule_appointment_tool = ScheduleAppointmentTool()
+
+        # set up the reception tools
+        self.reception_tools = [
             Tool(
-                name="access_patient_history",
-                func=self.access_patient_history,
-                description="Access and analyze patient's historical medical records. Input should be a patient ID string."
+                name=self.parse_appointment_tool.name,
+                func=self.parse_appointment_tool._run,
+                description=self.parse_appointment_tool.description
             ),
             Tool(
-                name="referral_recommendation",
-                func=self.make_referral_recommendation,
-                description="Generate specialist referrals based on patient assessment. Input should be a JSON string containing symptoms and risk factors."
+                name=self.schedule_appointment_tool.name,
+                func=self.schedule_appointment_tool._run,
+                description=self.schedule_appointment_tool.description
             )
         ]
 
-        # create the prompt for the call
-        self.generalist_prompt = generalist_prompt
+        self.reception = MyAgent(tools=self.reception_tools,
+                                 system_prompt=RECEPTION_SYSTEM_PROMPT,
+                                 template=RECEPTION_TEMPLATE,
+                                 agent_role="Reception Agent")
 
-        self.generalist = OpenAILLMs(self.tools)
+    def _setup_environment(self):
+        """load environment variables and set workspace directory and optionally returns keys."""
+        load_dotenv()
+        workspace_directory = os.getenv('WORKSPACE_DIRECTORY')
+
+        if not workspace_directory:
+            raise ValueError("WORKSPACE_DIRECTORY not set in environment variables")
+        
+        os.chdir(workspace_directory)
 
     # call the llm after it builds the prompt
-    def __call__(self, patient_id: str, symptoms: str):
-        prompt = self.build_generalist_prompt(patient_id, symptoms,  GENERALIST_EXAMPLE)
-        return self.generalist(prompt)
-
-    # format the prompt
-    def build_generalist_prompt(self, patient_id, symptoms, examples) -> str:
-        return self.generalist_prompt.format(
-                            patient_id = patient_id,
-                            symptoms = symptoms, 
-                            examples = examples)
-    
-
-    # create the tools
-    def access_patient_history(self, patient_id) -> str:
-        """Access patient history from the mock database."""
-        if patient_id in data.mock_patient_database:
-            return str(data.mock_patient_database[patient_id]["medical_history"])
-        return "No patient history found."
-
-    # make referral system
-    def make_referral_recommendation(self, input_str) -> str:
-        """Analyze symptoms and make referral recommendations for either a cardiologist or neruologist."""
-        return f"Based on the provided symptoms and history: {input_str}, here are the referral recommendations..."
+    def __call__(self, report):
+        return self.reception(report)

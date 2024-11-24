@@ -29,7 +29,7 @@ class NurseLLM():
         self.nurse_tools = [
             Tool(
                 name=self.user_input_tool.name,
-                func=self.user_input_tool,
+                func=self.user_input_tool._run,
                 description=self.user_input_tool.description
             )
         ]

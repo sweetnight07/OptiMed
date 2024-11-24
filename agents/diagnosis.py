@@ -1,7 +1,6 @@
 # import other packages
 import os 
 from dotenv import load_dotenv
-from typing import List 
 
 # import langcahin packages 
 from langchain.agents import Tool
@@ -26,6 +25,7 @@ class DiagnosisLLM():
 
         # set up directory path
         self.directory_path = directory_path
+
         # collect tools
         self.search_database_tool = SearchDatabaseTool(self.directory_path)
         self.search_online_tool = SearchOnlineTool()
@@ -34,12 +34,12 @@ class DiagnosisLLM():
         self.diagnostic_tools = [
             Tool(
                 name=self.search_database_tool.name,
-                func=self.search_database_tool,
+                func=self.search_database_tool._run,
                 description=self.search_database_tool.description
             ),
             Tool(
                 name=self.search_online_tool.name,
-                func=self.search_online_tool,
+                func=self.search_online_tool._run,
                 description=self.search_online_tool.description
             ),
         ]
