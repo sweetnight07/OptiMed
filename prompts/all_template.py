@@ -47,6 +47,7 @@ Final Answer: [agent_name]
 
 Output the final answer
 Before you begin here are some examples:
+
 {examples}
 (END OF EXAMPLES)
 

@@ -10,7 +10,6 @@
 2. Multi-Agent Conversing and Facilitation (LangGraph)
 3. Search Capabilities 
 4. Vector Similarity Search (FAISS)
-4. Hugging Face Integration (Recommendation System Agent)
 5. Google Calendar Planning (Scheduler Agent)
 
 ### Some Problems You Might Run Into

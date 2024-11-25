@@ -190,10 +190,6 @@ class MasterWorkflow:
             """
             determine the next node based on master's output
             """
-
-            # executes when the receptions passes back the report
-            if self.done:
-                return None
             
             last_master_message = report['messages'][-1]['content'] if report['messages'] else ""
             
@@ -250,7 +246,7 @@ class MasterWorkflow:
         """
         for testing purpose where we directly invoke the master
         """
-        master_response = self.master_agent(str(report))
+        master_response = self.master_agent(str(report), examples=MASTER_EXAMPLES)
         return master_response
 
 

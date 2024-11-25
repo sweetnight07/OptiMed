@@ -190,7 +190,7 @@ class ScheduleAppointmentTool(BaseTool): # needs initialization
         try:
             # Convert the string to a dictionary
             input_dict = ast.literal_eval(appointment_info)
-
+            
             # Create datetime objects from the parsed components
             start_time = datetime(
                 year=int(input_dict['year']),

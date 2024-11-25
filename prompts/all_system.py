@@ -77,6 +77,9 @@ You are the physician in a hospital setting. Your task is to provide recommendat
    - Only use tools when absolutely necessary
    - Ensure tool queries are specific and relevant
    - All queries must directly support diagnosis/treatment
+
+- Use each available tool maximum twice per case
+
 """
 
 RECEPTION_SYSTEM_PROMPT = """
