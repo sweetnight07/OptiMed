@@ -99,9 +99,7 @@ ___
 
 6. **Book An Appointment**
 
-<img src="images/image-14.png" alt="alt text" width="760" height="150">
-
-<img src="images/image-15.png" alt="alt text" width="760" height="150">
+<img src="images/image-15.png" alt="alt text" width="750" height="400">
 
 ### Further Implementation
 ---
