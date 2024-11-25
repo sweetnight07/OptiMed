@@ -22,30 +22,39 @@ Thought:{agent_scratchpad}
 """
 
 MASTER_TEMPLATE = """
-Please delegate the agents needed to fill out the report below:
+Please select the agent needed to fill out the report below:
 
-You do not have any tools:
+You have a basic responding tool that is not needed:
 
 {tools} or {tool_names}
 
-Here are the agents names:
 
-- NURSE: Responsible for filling out the 'patient_info' field.
+Here are the agents names:
+- NURSE: Responsible for filling out the 'patient_info' field and 'appointment_details' only after 'patient_info', 'diagnosis', 'recommendations' has been filled.
 - DIAGNOSIS: Responsible for filling out the 'diagnosis' field.
 - RECOMMENDATION: Responsible for filling out the 'recommendations' field.
-- SCHEDULE: Responsible for filling out the 'appointment_details' field.
+- RECEPTION: Responsible for scheduling when all entries have been filled.
 
 (END OF AGENT LIST)
 
 Use the following format:
 Current Report: {input}
-Thought: Think about which agent should complete the report based on the task.
+Thought: Think about which agent should be called to complete their section.
 Action: [agent_name]
-Final Answer: The final answer should be the agent name.
+Final Answer: [agent_name]
+
+(END OF FORMAT)
+
+Output the final answer
+Before you begin here are some examples:
+{examples}
+(END OF EXAMPLES)
+
+
 
 Begin!
-
 {agent_scratchpad}
+
 """
 
 NURSE_TEMPLATE = """
@@ -78,7 +87,7 @@ Observation: [The users input for the query]
 Final Thought: [Verify That You Have Done The Appropiate Step]
 Final Answer: [One of the following]
   - [A concise summary of the patient report written in a sentence or paragraph]
-  - Appointmet details [Format: Date: MM/DD/YYYY, Time: HH:MM-HH:MM]
+  - Format: [MM/DD/YYYY, HH:MM-HH:MM]
 
 Begin! 
 {agent_scratchpad}
@@ -153,6 +162,36 @@ Final Answer: [One of the following]
 Begin!
 {agent_scratchpad}
 """
+
+RECEPTION_TEMPLATE = """
+CONTEXT
+Current Patient Report: {input}
+
+(END OF CONTEXT)
+
+You have access to the following tools:
+
+{tools}
+
+TASK
+- Use the available tools to **schedule** the appointment.
+- Confirm the booking and provide a **confirmation message** including:
+   - Date and Time of the appointment.
+   - Appointment Type (e.g., "ECG Scan").
+   - Confirmation of appointment status** (e.g., "The appointment has been successfully booked.")
+
+RESPONSE FORMAT
+Thought: [Brief explanation of the next steps for scheduling]
+Action: [Use one of the tools provided: {tool_names} to be used to schedule the appointment]
+Action Input: [The requested input for that tool, you may decide at your own discretion]
+Observation: [Result of the action (confirmation from the tool)]
+Final Answer: [Confirmation message with date, time, patient name, and appointment type]
+
+Begin!
+{agent_scratchpad}
+"""
+
+
 
 
 

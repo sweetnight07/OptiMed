@@ -96,7 +96,7 @@ class MyAgent:
             SystemMessage(content=self.system_prompt)
         ]
 
-        messages.append(HumanMessage(content=input))
+        messages.append(HumanMessage(content=str(input)))
         return messages
 
     def _create_react_agent(self):
@@ -122,6 +122,7 @@ class MyAgent:
         """
         invoke the LLM with the user prompt with optional examples depending on template
         """
+        print(self.agent_role)
         invoke_args = {"input": input}
         
         # optional
@@ -135,7 +136,7 @@ class MyAgent:
             return result["output"]
         else:
             # direct LLM usage if no tools
-            messages = self._create_chat_messages(input)
+            messages = self._create_chat_messages(input) 
             response = self.llm.invoke(messages)
             return response.content
     

@@ -13,7 +13,7 @@ from prompts.all_template import RECOMMENDATION_TEMPLATE
 
 from tools.tool import CDCSearchTool
 
-class RecommendationLLM():
+class RecommendationAgent():
     def __init__(self):
         """
         initializes the recommender agent
@@ -50,6 +50,5 @@ class RecommendationLLM():
         
         os.chdir(workspace_directory)
 
-    # call the llm after it builds the prompt
     def __call__(self, report):
        return self.recommender(report)

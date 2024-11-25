@@ -15,7 +15,7 @@ from prompts.all_examples import DIAGNOSIS_EXAMPLES
 from tools.tool import SearchDatabaseTool
 from tools.tool import SearchOnlineTool
 
-class DiagnosisLLM():
+class DiagnosisAgent():
     def __init__(self, directory_path: str):
         """
         initializes the diagnosis agent

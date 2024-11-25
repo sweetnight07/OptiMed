@@ -40,6 +40,7 @@ class ReceptionAgent():
             )
         ]
 
+        # create the reception agent
         self.reception = MyAgent(tools=self.reception_tools,
                                  system_prompt=RECEPTION_SYSTEM_PROMPT,
                                  template=RECEPTION_TEMPLATE,
@@ -55,6 +56,5 @@ class ReceptionAgent():
         
         os.chdir(workspace_directory)
 
-    # call the llm after it builds the prompt
     def __call__(self, report):
         return self.reception(report)

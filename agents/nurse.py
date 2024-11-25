@@ -10,11 +10,11 @@ from agents.agent import MyAgent
 
 from prompts.all_system import NURSE_SYSTEM_PROMPT
 from prompts.all_template import NURSE_TEMPLATE
-from prompts.all_examples import NURSE_EXAMPLE
+from prompts.all_examples import NURSE_EXAMPLES
 
 from tools.tool import UserInputTool
 
-class NurseLLM():
+class NurseAgent():
     def __init__(self):
         """
         intializes the nurse agent
@@ -52,5 +52,5 @@ class NurseLLM():
 
     def __call__(self, report):
         """ invoke the agent with the prompt with optional examples depending on template"""
-        return self.nurse(report, examples=NURSE_EXAMPLE)
+        return self.nurse(report, examples=NURSE_EXAMPLES)
     
