@@ -1,136 +1,120 @@
-![alt text](prompting.png)
+## OptiMed
 
+OptiMed is a **Multi-Agent System** designed to replicate the workflow of a healthcare setting using **LangChain**. This system streamlines patient interactions by performing the following tasks:
 
+1. **Patient Interaction**: Engages with patients to collect relevant information.
+2. **Diagnosis**: Analyzes symptoms and provides a preliminary diagnosis.
+3. **Treatment Recommendations**: Suggests treatments or actionable recommendations.
+4. **Appointment Scheduling**: Facilitates scheduling follow-up appointments seamlessly.
 
+### Key Features
+---
+Before diving into the code, here are some **key features** to note:
 
-### Here Are Some Note Worthy Features
-1. Configurable and Flexible Open Ai
-2. Customizable Tools
-1. Reasoning Capabilities 
-2. Multi-Agent Conversing and Facilitation (LangGraph)
-3. Search Capabilities 
-4. Vector Similarity Search (FAISS)
-5. Google Calendar Planning (Scheduler Agent)
+- **Customizable and Flexible Agent Creation**  
+- **Integratable Tools for Various Agents**  
+- **Reasoning Capabilities** (CoT, ReAct)  
+- **Multi-Agent Collaboration** - *LangGraph* 
+- **Hub and Spoke Model** 
+- **Search Engine**  
+- **Vector Database**  
+- **Web Scraping**  
+- **Google Calendar Scheduling**
 
-### Some Problems You Might Run Into
-- incorrect API key provided: three reasons: invalid key from the source, created api key may take a while to be active, the key is not reflective of the current key from the .env (consider restarting environment)
+### Workflow
+---
+Here is the workflow between agents using the Hub and Spoke Model
 
-- parsing error: you can add handle_parsing_errors=True which allows the agent to handle any parsing issues
+![alt text](/images/workflow.png)
 
-- the jupyter notebook test might not be updated due to failed cache, consider restarting the kernel
+### Agent and Tools
+---
+- **Master Agent**: Facilitates and delegates tasks
+    - **Respond Tool** (Needed for Verbose Reasoning)
 
-- tool does not support sync invocation : ensure that each tool returns a callable function rather than a None or String for synced invocation
+- **Nurse Agent**: Interacts with the user to gather patient information and appointment details
+    - **User Interaction Tool**
 
-- invalid reducer signature for StateGraph: ensure that the State is in the appropiate type
+- **Diagnosis Agent**: Diagnoses the patient based on the patient information
+    - **Search Database**
+    - **Search Engine**
 
-- self.report is not actually the report dict type itself, but an instance so make sure to re initialized when passed in 
+- **Recommendation Agent**: Provides treatment suggestions
+    - **CDC Web Scraper**
 
-- user_input: the master agent had access to the user_input tool but in this case it is too complicated 
+- **Reception Agent**: Sets up appointments
+    - **Parse Appointment**
+    - **Schedule Appointment**
 
-- DEPRECIATION CRYYY
+### Prompting
+---
+Here is the prompting technique employed by each agents:
+![alt text](/images/prompting.png)
 
-- HAHHAAHHAHAHAHA HAAHAHAHAH the output cell was empty but if you copy it there was acutal reasoning bruhhhhh
+### Worked Example
+---
+1. **Passes In Empty Template**
 
--- I SEEEEEEEEEEEE THE CREATE REACT AUTOMATICALLY HAS A HIDDEN TOOLS NAME AND TOOOLS, anD  SCRATCH PAD SO MAKE SURE THEY ARE IN THE PROMPT
+![alt text](/images/image-1.png)
 
-- PDF OR IMAGES 
-## Composition
+2. **Extract Patient Information**
 
-#### PROBELMS FOR THE SAKE OF SIMPLICITY WE WILL NOT IMPLEMENT A DIAGNOSIS TEAM
+![alt text](/images/image-2.png)
 
-CODE TOP BUT PROMPT ENGINEER BOTTOM UP
+<img src="images/image-3.png" alt="alt text" width="760" height="100">
 
+<img src="images/image-4.png" alt="alt text" width="760" height="100">
 
+3. **Finds Diagnosis Using Tools**
 
+<img src="images/image-5.png" alt="alt text" width="760" height="150">
 
-- IT is chronolgoical system but finetung laters 
+___
 
+<img src="images/image-6.png" alt="alt text" width="760" height="150">
 
+4. **Searches CDC Online**
 
-## Thoguht Process 
+<img src="images/image-8.png" alt="alt text" width="760" height="150">
 
-- create a generic llm for better coding practice (give it the chance to create reasoning or regular agent)
+___
 
+<img src="images/image-9.png" alt="alt text" width="760" height="120">
 
-- start from the top bottom approach, start from the master node and handling its work flow first
+___
 
+<img src="images/image-10.png" alt="alt text" width="760" height="120">
 
-If there is uncertainty or they require further collaboration, a Secondary Coordinator Agent might be used to facilitate communication between specialists.
+5. **Sets Up An Appointment**
 
-- use a agentstate to keep track of hte state of hte report
+<img src="images/image-11.png" alt="alt text" width="760" height="150">
 
-- OH SHOOT, CHATPROMPT USES PROMPT TEMPLATE AND TO INVOKE YOU FILL THESE IN BUT MAKE SURE IT IS IN A DICT
+___
 
-- ideally we add everythign to the prioir ddatabase
+<img src="images/image-12.png" alt="alt text" width="760" height="120">
 
-- only thing different about each agent is there tools and the agent type 
+___
 
-- CONTAINERIZATION
+<img src="images/image-13.png" alt="alt text" width="760" height="120">
 
-- Incorporates some use of knowledge graphs 
+6. **Book An Appointment**
 
-- Modularize the tools, maybe even having tool and within it (search tools | query tools | user interaction tool) 
+<img src="images/image-14.png" alt="alt text" width="760" height="150">
 
-## Further Implementation
-- Subgraph In Diagnosis: Extend The Diagnosis Agent To Be A Sub Graph With Many Specialist Agent
-- Efficient Vector Database Searching: Add A Tool That Extracts The MetaData of PDF So Query LookUp 'source' Would Be Filtered and Flexible Additional Without Recreation
-- More Data: Create Folders For More Disciplines And Their Own Vector Database
-- Deterministic Outputs: Implement Few Shot Learning (FSL)
-- Tokenize the Documents: 
-- HAVE DIFFERENT PROMPTING TECHNIQUES FOR DIFFERENT AGENTS
-- Efficient Searching: Implementing A Caching System and Switch To Google But Search API Cost Money
+<img src="images/image-15.png" alt="alt text" width="760" height="150">
 
-- Page Rank For Better
+### Further Implementation
+---
+- **Subgraph in Diagnosis**: Extend the Diagnosis Agent to act as a subgraph, incorporating multiple specialist agents to provide more detailed and specialized diagnoses.
 
+- **Efficient Vector Database Searching**: Add a tool that extracts metadata from PDFs, allowing query lookups by 'source'. This approach will enable flexible filtering without the need for database recreation.
 
+- **Expand Data**: Create separate folders for different disciplines, each with its own dedicated vector database, to better organize and manage diverse healthcare data.
 
+- **Deterministic Outputs**: Implement **Few-Shot Learning (FSL)** to ensure consistent and reliable results across similar queries, reducing the need for retraining.
 
+- **Efficient Searching**: Implement a caching system to improve search speeds. Additionally, explore switching to Google’s Search API, considering its costs and balancing efficiency with budget.
 
-## Resources
+- **PageRank for Better Relevance**: Integrate a PageRank-like algorithm to prioritize and rank search results, improving the relevance of returned information.
 
-#### Prompting 
-
-- [ChatPromptTemplate (MUST READ)](https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.ChatPromptTemplate.html)
-
-- [HumanPromptTemplate](https://api.python.langchain.com/en/latest/prompts/langchain_core.prompts.chat.HumanMessagePromptTemplate.html)
-
-- [SystemMessage](https://api.python.langchain.com/en/latest/messages/langchain_core.messages.system.SystemMessage.html)
-
-- [Prompt Techniques](https://www.promptingguide.ai/techniques)
-
-#### Agent
-- [CreateReactAgent](https://api.python.langchain.com/en/latest/agents/langchain.agents.react.agent.create_react_agent.html)
-- [AgentExecutor](https://api.python.langchain.com/en/latest/agents/langchain.agents.agent.AgentExecutor.html#langchain.agents.agent.AgentExecutor)
-
-##### Tools
-- [Custom Tools](https://python.langchain.com/docs/how_to/custom_tools/)
-
-##### LangGraph
-
-- [LangGraph Thread](https://langchain-ai.github.io/langgraph/concepts/low_level/#threads)
-
-#### Vector 
-
-- [FAISS]
-
-
-####
-- [OTHERS](https://www.roro.io/post/7-practical-ways-to-prevent-llm-hallucinations-and-protect-your-product)
-
-
-
-- WHY LANGGRAPH,IF YOU DEFINE THE SCOPE THEN EACH AGENT ARE ONLY RESPONSIBLE FOR THEIR OWN SPECIFC PART IN HE STATE RATHER CONSIDERING ALL THE DIFFERENT SCENARIO
-
--- FIX FOR MORE CONSISTENT FORMAT FOR SYSTEM, TEMPALTE, EXMAPLES
-
--- TODO 
-- ADD SEARCH ENGINE AND TESTING AND EXMAPLES FOR IT
-- NEED ROBUST TESTING
-
-- RECOMMENDATION SHOULD BE RELIABLE AS POSSIBLE HENCE WE USE CDC, DIAGNOSIS NEEDS GATHER AS MUCH INFOMRATION
-
-- Implement dynamic webscraping/ just realized that i couldv'e queried the url 
-
-
-
-![alt text](image.png)
+- **Robust Testing**: Finetune the prompts

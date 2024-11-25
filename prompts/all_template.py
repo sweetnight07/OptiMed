@@ -132,7 +132,9 @@ Begin!
 
 RECOMMENDATION_TEMPLATE = """
 CONTEXT
-Current Patient Report Status: {input}
+Current Patient Report Status: 
+
+{input}
 
 (END OF CONTEXT)
 
@@ -140,10 +142,10 @@ You have access to the following tools:
 
 {tools}
 
-TASK STRUCTURE
-1. Review the current patient report and determine whether a treatment or diagnostic recommendation can be made.
-    - If no recommendation can be made, you may use the available tools to gather additional information.
-    - IMPORTANT: If a specific tool has already been used, it cannot be used again. However, other tools can still be utilized.
+TASK STRUCTURE  
+1. Review the current patient report and determine whether a treatment or diagnostic recommendation can be made.  
+    - If no recommendation can be made, you may use the available tools to gather additional information.  
+    - IMPORTANT: Each tool can only be used **twice**. If a specific tool has been used twice, it cannot be used again. However, other tools can still be utilized.  
     - Once a treatment or diagnostic recommendation is made, you may display the final answer.
 
 RESPONSE FORMAT
@@ -159,6 +161,9 @@ Final Thought: [Verify that a conclusion can be made]
 Final Answer: [One of the following]
     - [A brief description of the recommended treatment or diagnostic test]
     - No Recommendations
+
+NOTES:
+**Limitation on Tools**: The **Search CDC Online** tool can only be used **twice**.
 
 Begin!
 {agent_scratchpad}

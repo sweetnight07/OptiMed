@@ -134,8 +134,8 @@ EXAMPLE 1:
 
 Thought: The patient report includes symptoms of chest pain radiating to the left arm, shortness of breath, and a history of hypertension. These signs strongly indicate a possible acute coronary syndrome (ACS), and the provided details seem sufficient to make a diagnosis without using the tool.
 Reasoning: The combination of classic symptoms and history points to ACS, and no further search is needed to confirm this likely diagnosis.
-Action: [NONE]
-Action Input: [NONE]
+Action:
+Action Input: 
 Observation: None
 
 Final Thought: The information provided is sufficient to make a diagnosis.
@@ -168,8 +168,8 @@ Observation: The database lists potential causes such as anxiety, atypical angin
 
 Thought: Even with the database output, the information remains insufficient to determine a clear diagnosis.
 Reasoning: Additional tests or detailed history (e.g., ECG, stress test, family history) would be required to narrow down the possibilities.
-Action: [NONE]
-Action Input: [NONE]
+Action:
+Action Input:
 Observation: None
 
 Final Thought: The information is insufficient for a diagnosis.
