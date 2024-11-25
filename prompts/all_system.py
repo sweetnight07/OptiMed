@@ -25,8 +25,8 @@ Reception Agent
    - Schedules appointments based on completed 'recommendation', 'diagnosis', 'patient_info', ensuring patient availability is confirmed, only after everything has been filled.
 
 Your output must strictly be only one agent name depending what needs to be filled in order. 
-Here are your only outputs:
 
+Here are your only outputs:
 NURSE
 DIAGNOSIS
 RECOMMENDATION
