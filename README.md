@@ -118,7 +118,7 @@ ___
 - **Robust Testing**: Finetune the prompts
 
 ### Usage Instructions
-
+---
 1. **Create an OpenAI API Token**  
    Obtain an API token from OpenAI by following the instructions provided in their documentation.
 
