@@ -116,3 +116,20 @@ ___
 - **PageRank for Better Relevance**: Integrate a PageRank-like algorithm to prioritize and rank search results, improving the relevance of returned information.
 
 - **Robust Testing**: Finetune the prompts
+
+### Usage Instructions
+
+1. **Create an OpenAI API Token**  
+   Obtain an API token from OpenAI by following the instructions provided in their documentation.
+
+2. **Create a Workspace Directory**  
+   Set up a directory for your workspace where the project files and related data will be stored.
+
+3. **Generate `credentials.json` from Google Cloud Platform**  
+   Access the Google Cloud Platform, create the necessary credentials, and download the `credentials.json` file required for authentication.
+
+4. **Install Dependencies**  
+   Install the required dependencies by running the following command:
+   ```bash
+   pip install -r requirements.txt
+
